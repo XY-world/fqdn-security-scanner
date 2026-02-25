@@ -1,10 +1,21 @@
 {
-  "timestamp": "2026-02-25T07:29:10.379383+00:00",
-  "total_discoveries": 23,
+  "timestamp": "2026-02-25T08:07:29.020029+00:00",
+  "total_discoveries": 24,
   "covered_count": 3,
-  "uncovered_count": 20,
-  "coverage_percentage": 13.0,
+  "uncovered_count": 21,
+  "coverage_percentage": 12.5,
   "categories": {
+    "Subdomain Security": {
+      "count": 4,
+      "covered": 0,
+      "uncovered": 4,
+      "discoveries": [
+        24,
+        14,
+        13,
+        12
+      ]
+    },
     "Email Security": {
       "count": 3,
       "covered": 0,
@@ -59,16 +70,6 @@
         1
       ]
     },
-    "Subdomain Security": {
-      "count": 3,
-      "covered": 0,
-      "uncovered": 3,
-      "discoveries": [
-        14,
-        13,
-        12
-      ]
-    },
     "Network": {
       "count": 1,
       "covered": 0,
@@ -100,88 +101,95 @@
   ],
   "uncovered": [
     {
+      "id": 24,
+      "title": "Statamic is vulnerable to account takeover via password reset link injection",
+      "suggested_module": "email_security",
+      "category": "cve",
+      "status": "new"
+    },
+    {
       "id": 23,
       "title": "CVE-2022-36056: Cosign is a project under the sigstore organization which aims t",
       "suggested_module": "email_security",
       "category": "cve",
-      "status": "new"
+      "status": "implemented"
     },
     {
       "id": 22,
       "title": "CVE-2022-23649: Cosign provides container signing, verification, and storage in ",
       "suggested_module": "container_security",
       "category": "cve",
-      "status": "new"
+      "status": "implemented"
     },
     {
       "id": 21,
       "title": "CVE-2017-11364: The CMS installer in Joomla! before 3.7.4 does not verify a user",
       "suggested_module": "custom_check",
       "category": "cve",
-      "status": "new"
+      "status": "implemented"
     },
     {
       "id": 20,
       "title": "CVE-2025-61084: MDaemon Mail Server 23.5.2 validates SPF, DKIM, and DMARC using ",
       "suggested_module": "email_security",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 19,
       "title": "CVE-2025-59419: Netty is an asynchronous, event-driven network application frame",
       "suggested_module": "email_security",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 18,
       "title": "CVE-2024-7208: A vulnerability in multi-tenant hosting allows an authenticated s",
       "suggested_module": "email_security",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 14,
       "title": "CVE-2024-5528: An issue was discovered in GitLab CE/EE affecting all versions pr",
       "suggested_module": "custom_check",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 13,
       "title": "CVE-2023-36474: Interactsh is an open-source tool for detecting out-of-band inte",
       "suggested_module": "custom_check",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 12,
       "title": "CVE-2017-14389: An issue was discovered in Cloud Foundry Foundation capi-release",
       "suggested_module": "api_security",
       "category": "cve",
-      "status": "new"
+      "status": "implemented"
     },
     {
       "id": 11,
       "title": "CVE-2001-1567: Lotus Domino server 5.0.9a and earlier allows remote attackers to",
       "suggested_module": "api_security",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 10,
       "title": "CVE-2000-0563: The URLConnection function in MacOS Runtime Java (MRJ) 2.1 and ea",
       "suggested_module": "custom_check",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 9,
       "title": "CVE-1999-0633: Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: N",
       "suggested_module": "custom_check",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 8,
@@ -202,41 +210,34 @@
       "title": "CVE-2003-0131: The SSL and TLS components for OpenSSL 0.9.6i and earlier, 0.9.7,",
       "suggested_module": "custom_check",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 5,
       "title": "CVE-2003-0011: Unknown vulnerability in the DNS intrusion detection application ",
       "suggested_module": "custom_check",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 4,
       "title": "CVE-2002-0990: The web proxy component in Symantec Enterprise Firewall (SEF) 6.5",
       "suggested_module": "waf_detector",
       "category": "cve",
-      "status": "new"
+      "status": "implemented"
     },
     {
       "id": 3,
       "title": "CVE-1999-0622: Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: N",
       "suggested_module": "custom_check",
       "category": "cve",
-      "status": "new"
+      "status": "reviewing"
     },
     {
       "id": 2,
       "title": "Fickling: OBJ opcode call invisibility bypasses all safety checks",
       "suggested_module": "waf_detector",
       "category": "technique",
-      "status": "new"
-    },
-    {
-      "id": 1,
-      "title": "CVE-2022-23632: Traefik is an HTTP reverse proxy and load balancer. Prior to ver",
-      "suggested_module": "custom_check",
-      "category": "cve",
       "status": "new"
     }
   ],

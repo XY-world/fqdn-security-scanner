@@ -105,7 +105,7 @@
     "description": "An issue was discovered in Cloud Foundry Foundation capi-release (all versions prior to 1.45.0), cf-release (all versions prior to v280), and cf-deployment (all versions prior to v1.0.0). The Cloud Controller does not prevent space developers from creating subdomains to an already existing route that belongs to a different user in a different org and space, aka an \"Application Subdomain Takeover.\"",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2017-14389",
     "category": "cve",
-    "status": "reviewing"
+    "status": "implemented"
   },
   {
     "id": 13,
@@ -186,7 +186,7 @@
     "description": "The CMS installer in Joomla! before 3.7.4 does not verify a user's ownership of a webspace, which allows remote authenticated users to gain control of the target application by leveraging Certificate Transparency logs.",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2017-11364",
     "category": "cve",
-    "status": "reviewing"
+    "status": "implemented"
   },
   {
     "id": 22,
@@ -195,7 +195,7 @@
     "description": "Cosign provides container signing, verification, and storage in an OCI registry for the sigstore project. Prior to version 1.5.2, Cosign can be manipulated to claim that an entry for a signature exists in the Rekor transparency log even if it doesn't. This requires the attacker to have pull and push permissions for the signature in OCI. This can happen with both standard signing with a keypair and \"keyless signing\" with Fulcio. If an attacker has access to the signature in OCI, they can manipula",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2022-23649",
     "category": "cve",
-    "status": "new"
+    "status": "implemented"
   },
   {
     "id": 23,
@@ -204,6 +204,15 @@
     "description": "Cosign is a project under the sigstore organization which aims to make signatures invisible infrastructure. In versions prior to 1.12.0 a number of vulnerabilities have been found in cosign verify-blob, where Cosign would successfully verify an artifact when verification should have failed. First a cosign bundle can be crafted to successfully verify a blob even if the embedded rekorBundle does not reference the given signature. Second, when providing identity flags, the email and issuer of a cer",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2022-36056",
     "category": "cve",
-    "status": "reviewing"
+    "status": "implemented"
+  },
+  {
+    "id": 24,
+    "timestamp": "2026-02-25T08:06:17.543168+00:00",
+    "title": "Statamic is vulnerable to account takeover via password reset link injection",
+    "description": "## Impact\n\nAn attacker may leverage a vulnerability in the password reset feature to capture a user's token and reset the password on their behalf.\n\nThe attacker must know the email address of a valid account on the site, and the actual user must blindly click the link in their email even though they didn't request the reset.\n\n## Patches\n\nThis has been fixed in 6.3.3 and 5.73.10.",
+    "source": "https://github.com/advisories/GHSA-jxq9-79vj-rgvw",
+    "category": "cve",
+    "status": "new"
   }
 ]

@@ -4,10 +4,10 @@
     "display_name": "Discovery Agent",
     "icon": "\ud83d\udd0d",
     "status": "idle",
-    "last_run": null,
-    "last_result": null,
+    "last_run": "2026-02-25T08:07:29.021133+00:00",
+    "last_result": "Found 0 new items, 21 not covered",
     "stats": {
-      "discoveries": 0,
+      "discoveries": 1,
       "last_search": null
     }
   },
@@ -16,10 +16,10 @@
     "display_name": "Scanner Agent",
     "icon": "\ud83d\udee1\ufe0f",
     "status": "idle",
-    "last_run": null,
-    "last_result": null,
+    "last_run": "2026-02-25T08:05:53.326772+00:00",
+    "last_result": "Completed scan of teams.microsoft.com",
     "stats": {
-      "scans_completed": 0,
+      "scans_completed": 2,
       "available_modules": 2
     }
   },

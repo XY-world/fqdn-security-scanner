@@ -173,5 +173,160 @@
     "timestamp": "2026-02-25T07:34:06.670676+00:00",
     "agent": "pr_agent",
     "message": "\u2705 Module loaded: Email Security (email_23)"
+  },
+  {
+    "timestamp": "2026-02-25T08:03:13.585284+00:00",
+    "agent": "scanner",
+    "message": "Starting scan of teams.microsoft.com"
+  },
+  {
+    "timestamp": "2026-02-25T08:03:13.643970+00:00",
+    "agent": "scanner",
+    "message": "Completed scan of teams.microsoft.com - 4 findings"
+  },
+  {
+    "timestamp": "2026-02-25T08:05:53.271007+00:00",
+    "agent": "scanner",
+    "message": "Starting scan of teams.microsoft.com"
+  },
+  {
+    "timestamp": "2026-02-25T08:05:53.327713+00:00",
+    "agent": "scanner",
+    "message": "Completed scan of teams.microsoft.com - 4 findings"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:03.160910+00:00",
+    "agent": "discovery",
+    "message": "Starting security discovery search..."
+  },
+  {
+    "timestamp": "2026-02-25T08:06:03.163276+00:00",
+    "agent": "discovery",
+    "message": "Searching: FQDN security vulnerability 2026"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:05.392005+00:00",
+    "agent": "discovery",
+    "message": "Searching: DNS security CVE latest"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:05.531424+00:00",
+    "agent": "discovery",
+    "message": "Starting security discovery search..."
+  },
+  {
+    "timestamp": "2026-02-25T08:06:05.532776+00:00",
+    "agent": "discovery",
+    "message": "Searching: FQDN security vulnerability 2026"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:06.590278+00:00",
+    "agent": "discovery",
+    "message": "Starting security discovery search..."
+  },
+  {
+    "timestamp": "2026-02-25T08:06:06.591328+00:00",
+    "agent": "discovery",
+    "message": "Searching: FQDN security vulnerability 2026"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:08.347843+00:00",
+    "agent": "discovery",
+    "message": "Searching: DNS security CVE latest"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:10.343804+00:00",
+    "agent": "discovery",
+    "message": "Searching: SSL TLS vulnerability new"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:12.091199+00:00",
+    "agent": "discovery",
+    "message": "Searching: HTTP security headers bypass"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:13.870243+00:00",
+    "agent": "discovery",
+    "message": "Searching: subdomain takeover technique"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:15.701189+00:00",
+    "agent": "discovery",
+    "message": "Searching: DNSSEC vulnerability"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:17.545760+00:00",
+    "agent": "discovery",
+    "message": "Searching: SPF DKIM DMARC bypass"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:19.160010+00:00",
+    "agent": "discovery",
+    "message": "Searching: certificate transparency security"
+  },
+  {
+    "timestamp": "2026-02-25T08:06:20.969733+00:00",
+    "agent": "discovery",
+    "message": "Analyzing coverage against Scanner modules..."
+  },
+  {
+    "timestamp": "2026-02-25T08:06:20.973367+00:00",
+    "agent": "discovery",
+    "message": "Completed. Found 1 discoveries, 21 need new modules."
+  },
+  {
+    "timestamp": "2026-02-25T08:07:14.983777+00:00",
+    "agent": "discovery",
+    "message": "Starting security discovery search..."
+  },
+  {
+    "timestamp": "2026-02-25T08:07:14.986915+00:00",
+    "agent": "discovery",
+    "message": "Searching: FQDN security vulnerability 2026"
+  },
+  {
+    "timestamp": "2026-02-25T08:07:17.066372+00:00",
+    "agent": "discovery",
+    "message": "Searching: DNS security CVE latest"
+  },
+  {
+    "timestamp": "2026-02-25T08:07:18.714871+00:00",
+    "agent": "discovery",
+    "message": "Searching: SSL TLS vulnerability new"
+  },
+  {
+    "timestamp": "2026-02-25T08:07:20.377813+00:00",
+    "agent": "discovery",
+    "message": "Searching: HTTP security headers bypass"
+  },
+  {
+    "timestamp": "2026-02-25T08:07:22.107175+00:00",
+    "agent": "discovery",
+    "message": "Searching: subdomain takeover technique"
+  },
+  {
+    "timestamp": "2026-02-25T08:07:23.772852+00:00",
+    "agent": "discovery",
+    "message": "Searching: DNSSEC vulnerability"
+  },
+  {
+    "timestamp": "2026-02-25T08:07:25.509161+00:00",
+    "agent": "discovery",
+    "message": "Searching: SPF DKIM DMARC bypass"
+  },
+  {
+    "timestamp": "2026-02-25T08:07:27.282914+00:00",
+    "agent": "discovery",
+    "message": "Searching: certificate transparency security"
+  },
+  {
+    "timestamp": "2026-02-25T08:07:29.018339+00:00",
+    "agent": "discovery",
+    "message": "Analyzing coverage against Scanner modules..."
+  },
+  {
+    "timestamp": "2026-02-25T08:07:29.022172+00:00",
+    "agent": "discovery",
+    "message": "Completed. Found 0 discoveries, 21 need new modules."
   }
 ]
