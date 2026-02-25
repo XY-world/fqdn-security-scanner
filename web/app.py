@@ -113,7 +113,12 @@ def run_scan_async(scan_id, target, modules, timeout):
 @app.route("/")
 def index():
     """Render main page."""
-    return render_template("index.html", modules=AVAILABLE_MODULES)
+    # Only pass serializable data to template
+    modules_data = {
+        name: {"name": info["name"], "icon": info["icon"]}
+        for name, info in AVAILABLE_MODULES.items()
+    }
+    return render_template("index.html", modules=modules_data)
 
 
 @app.route("/api/scan", methods=["POST"])
