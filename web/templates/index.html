@@ -48,7 +48,8 @@
         <main class="max-w-7xl mx-auto px-4 py-8">
             
             <!-- Agent Orchestra Panel - Three Column Layout -->
-            <div v-if="activeTab === 'agents'" class="grid grid-cols-12 gap-4 h-[calc(100vh-120px)]">
+            <div v-if="activeTab === 'agents'" class="grid gap-4 h-[calc(100vh-120px)]"
+                 :class="activityCollapsed ? 'grid-cols-10' : 'grid-cols-12'">
                 
                 <!-- LEFT: Agent List -->
                 <div class="col-span-3 bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
@@ -87,7 +88,8 @@
                 </div>
                 
                 <!-- CENTER: Agent Content -->
-                <div class="col-span-6 bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
+                <div :class="activityCollapsed ? 'col-span-7' : 'col-span-6'" 
+                     class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col transition-all">
                     <div class="px-4 py-3 border-b border-gray-700 flex items-center justify-between">
                         <h3 class="text-sm font-semibold text-gray-300">
                             [[ agents[selectedAgent]?.icon ]] [[ agents[selectedAgent]?.display_name ]]
@@ -233,10 +235,13 @@
                     </div>
                 </div>
                 
-                <!-- RIGHT: Activity Stream -->
-                <div class="col-span-3 bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
-                    <div class="px-4 py-3 border-b border-gray-700">
+                <!-- RIGHT: Activity Stream (Collapsible) -->
+                <div v-if="!activityCollapsed" class="col-span-3 bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
+                    <div class="px-4 py-3 border-b border-gray-700 flex items-center justify-between">
                         <h3 class="text-sm font-semibold text-gray-300">🔄 Activity</h3>
+                        <button @click="activityCollapsed = true" class="text-gray-400 hover:text-white text-xs">
+                            ▶ Hide
+                        </button>
                     </div>
                     <div class="flex-1 overflow-y-auto">
                         <div v-if="activities.length === 0" class="px-4 py-8 text-center text-gray-500 text-sm">
@@ -253,6 +258,19 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Collapsed Activity Toggle Button -->
+                <div v-else class="flex items-start">
+                    <button @click="activityCollapsed = false" 
+                            class="bg-gray-800 border border-gray-700 rounded-xl px-2 py-4 text-gray-400 hover:text-white hover:bg-gray-700 transition"
+                            title="Show Activity">
+                        <span class="text-lg">◀</span>
+                        <div class="text-xs mt-2 writing-mode-vertical">🔄</div>
+                        <div v-if="activities.length > 0" class="mt-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            [[ activities.length > 9 ? '9+' : activities.length ]]
+                        </div>
+                    </button>
                 </div>
                 
             </div>
@@ -427,6 +445,7 @@
                 const coverage = ref(null);
                 const selectedModuleFilter = ref(null);
                 const selectedAgent = ref('discovery');  // Default selected agent
+                const activityCollapsed = ref(false);  // Activity panel collapsed state
                 
                 // Computed: filtered discoveries by selected module
                 const filteredDiscoveries = computed(() => {
@@ -725,7 +744,7 @@
                     activeTab, target, timeout, modules, selectedModules,
                     scanning, progress, currentModule, results, expandedFindings,
                     agents, activities, discoveries, coverage,
-                    selectedModuleFilter, filteredDiscoveries, selectedAgent,
+                    selectedModuleFilter, filteredDiscoveries, selectedAgent, activityCollapsed,
                     implementedDiscoveries, getModuleDescription,
                     moduleCount, groupedUncovered, getGroupStatus, reviewGroup,
                     toggleModule, startScan, toggleFinding,
