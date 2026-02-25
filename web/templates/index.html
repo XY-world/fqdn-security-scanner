@@ -109,6 +109,95 @@
                     </div>
                 </div>
                 
+                <!-- Coverage Analysis Panel -->
+                <div v-if="coverage && coverage.total_discoveries > 0" class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-700">
+                        <h3 class="text-lg font-semibold">📊 Coverage Analysis</h3>
+                    </div>
+                    <div class="p-6">
+                        <!-- Coverage Stats -->
+                        <div class="grid grid-cols-4 gap-4 mb-6">
+                            <div class="bg-gray-900 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold">[[ coverage.total_discoveries ]]</div>
+                                <div class="text-xs text-gray-400">Total</div>
+                            </div>
+                            <div class="bg-gray-900 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-green-400">[[ coverage.covered_count ]]</div>
+                                <div class="text-xs text-gray-400">Covered</div>
+                            </div>
+                            <div class="bg-gray-900 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-red-400">[[ coverage.uncovered_count ]]</div>
+                                <div class="text-xs text-gray-400">Uncovered</div>
+                            </div>
+                            <div class="bg-gray-900 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold" :class="coverage.coverage_percentage >= 70 ? 'text-green-400' : coverage.coverage_percentage >= 40 ? 'text-yellow-400' : 'text-red-400'">
+                                    [[ coverage.coverage_percentage ]]%
+                                </div>
+                                <div class="text-xs text-gray-400">Coverage</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                <span>Scanner Module Coverage</span>
+                                <span>[[ coverage.covered_count ]] / [[ coverage.total_discoveries ]]</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-3">
+                                <div class="h-3 rounded-full transition-all duration-500"
+                                     :class="coverage.coverage_percentage >= 70 ? 'bg-green-500' : coverage.coverage_percentage >= 40 ? 'bg-yellow-500' : 'bg-red-500'"
+                                     :style="{ width: coverage.coverage_percentage + '%' }"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Categories Breakdown -->
+                        <div class="mb-6">
+                            <h4 class="text-sm font-medium text-gray-300 mb-3">Vulnerability Categories</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <div v-for="(cat, name) in coverage.categories" :key="name"
+                                     class="bg-gray-900 rounded px-3 py-2">
+                                    <div class="text-xs text-gray-400">[[ name ]]</div>
+                                    <div class="flex items-center space-x-2 mt-1">
+                                        <span class="text-sm font-medium">[[ cat.count ]]</span>
+                                        <span class="text-xs" :class="cat.uncovered > 0 ? 'text-red-400' : 'text-green-400'">
+                                            ([[ cat.uncovered ]] uncovered)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Uncovered Items -->
+                        <div v-if="coverage.uncovered && coverage.uncovered.length > 0">
+                            <h4 class="text-sm font-medium text-gray-300 mb-3">⚠️ Need New Modules ([[ coverage.uncovered.length ]])</h4>
+                            <div class="space-y-2 max-h-48 overflow-y-auto">
+                                <div v-for="item in coverage.uncovered" :key="item.id"
+                                     class="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-3 flex items-center justify-between">
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-sm font-medium truncate">[[ item.title ]]</div>
+                                        <div class="text-xs text-gray-400">
+                                            Suggested module: <span class="text-blue-400">[[ item.suggested_module ]]</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-2 ml-4">
+                                        <button v-if="item.status === 'new'"
+                                                @click="updateDiscoveryStatus(item.id, 'reviewing')"
+                                                class="text-xs bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded whitespace-nowrap">
+                                            Review
+                                        </button>
+                                        <button v-if="item.status === 'reviewing'"
+                                                @click="triggerPRAgent(item.id)"
+                                                class="text-xs bg-green-600 hover:bg-green-700 px-3 py-1 rounded whitespace-nowrap">
+                                            🔧 Implement
+                                        </button>
+                                        <span v-if="item.status === 'implemented'" class="text-xs text-green-400">✓ Done</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Discoveries Panel -->
                 <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-700 flex items-center justify-between">
@@ -343,6 +432,7 @@
                 const agents = ref({{ agents | tojson }});
                 const activities = ref([]);
                 const discoveries = ref([]);
+                const coverage = ref(null);
                 
                 // Fetch agent data
                 const fetchAgents = async () => {
@@ -366,8 +456,18 @@
                     } catch (e) { console.error('Fetch discoveries error:', e); }
                 };
                 
+                const fetchCoverage = async () => {
+                    try {
+                        const res = await fetch('api/agents/coverage');
+                        const data = await res.json();
+                        if (data && data.total_discoveries) {
+                            coverage.value = data;
+                        }
+                    } catch (e) { console.error('Fetch coverage error:', e); }
+                };
+                
                 const refreshAgentData = async () => {
-                    await Promise.all([fetchAgents(), fetchActivities(), fetchDiscoveries()]);
+                    await Promise.all([fetchAgents(), fetchActivities(), fetchDiscoveries(), fetchCoverage()]);
                 };
                 
                 onMounted(() => {
@@ -562,7 +662,7 @@
                 return {
                     activeTab, target, timeout, modules, selectedModules,
                     scanning, progress, currentModule, results, expandedFindings,
-                    agents, activities, discoveries,
+                    agents, activities, discoveries, coverage,
                     toggleModule, startScan, toggleFinding,
                     severityIcon, severityBgClass, sortedFindings,
                     riskColor, riskLevel, formatTime, formatTimeAgo, downloadReport,

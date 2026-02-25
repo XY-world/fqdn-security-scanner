@@ -250,6 +250,12 @@ def get_discoveries():
     return jsonify(agent_manager.get_discoveries(limit, status))
 
 
+@app.route("/api/agents/coverage")
+def get_coverage():
+    """Get coverage analysis."""
+    return jsonify(agent_manager.get_coverage_analysis())
+
+
 @app.route("/api/agents/discoveries/<int:discovery_id>", methods=["PATCH"])
 def update_discovery(discovery_id):
     """Update a discovery's status."""

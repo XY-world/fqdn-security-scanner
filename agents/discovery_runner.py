@@ -187,20 +187,158 @@ def run_discovery():
     
     save_seen(seen)
     
+    # Analyze coverage
+    agent_manager.add_activity("discovery", "Analyzing coverage against Scanner modules...")
+    analysis = analyze_coverage(new_findings)
+    agent_manager.set_coverage_analysis(analysis)
+    
     # Complete
     agent_manager.update_agent_status(
         "discovery", 
         "idle", 
-        f"Found {len(new_findings)} new items"
+        f"Found {len(new_findings)} new items, {analysis['uncovered_count']} not covered"
     )
     agent_manager.add_activity(
         "discovery",
-        f"Completed search. Found {len(new_findings)} new discoveries."
+        f"Completed. Found {len(new_findings)} discoveries, {analysis['uncovered_count']} need new modules."
     )
     
     print(f"[{datetime.now(timezone.utc).isoformat()}] Discovery complete. Found {len(new_findings)} new items.")
     
     return new_findings
+
+
+def analyze_coverage(findings: list) -> dict:
+    """Analyze which discoveries are covered by existing Scanner modules."""
+    
+    # Current Scanner modules and what they cover
+    SCANNER_MODULES = {
+        "dns": {
+            "name": "DNS Security",
+            "covers": ["dns", "dnssec", "spf", "dkim", "dmarc", "mx", "cname", "ns", "soa", "txt"]
+        },
+        "ssl": {
+            "name": "SSL/TLS",
+            "covers": ["ssl", "tls", "certificate", "cipher", "https", "x509", "pem", "key", "encryption"]
+        },
+        "headers": {
+            "name": "HTTP Headers",
+            "covers": ["header", "hsts", "csp", "x-frame", "x-content", "cors", "cookie", "referrer"]
+        },
+        "ports": {
+            "name": "Port Scan",
+            "covers": ["port", "tcp", "udp", "service", "open port", "firewall", "network"]
+        },
+        "subdomains": {
+            "name": "Subdomains",
+            "covers": ["subdomain", "takeover", "dangling", "cname", "domain enumeration"]
+        },
+        "vulns": {
+            "name": "Vulnerabilities",
+            "covers": ["vulnerability", "cve", "exploit", "injection", "xss", "csrf", "sqli", "rce"]
+        }
+    }
+    
+    # Categorize all discoveries
+    categories = {}
+    uncovered = []
+    covered = []
+    
+    all_discoveries = agent_manager.get_discoveries(limit=100)
+    
+    for discovery in all_discoveries:
+        title = discovery.get("title", "").lower()
+        description = discovery.get("description", "").lower()
+        text = title + " " + description
+        
+        # Find which module covers this
+        covered_by = None
+        for module_id, module_info in SCANNER_MODULES.items():
+            for keyword in module_info["covers"]:
+                if keyword in text:
+                    covered_by = module_id
+                    break
+            if covered_by:
+                break
+        
+        # Categorize by vulnerability type
+        vuln_type = categorize_vuln_type(text)
+        if vuln_type not in categories:
+            categories[vuln_type] = {"count": 0, "covered": 0, "uncovered": 0, "discoveries": []}
+        
+        categories[vuln_type]["count"] += 1
+        categories[vuln_type]["discoveries"].append(discovery["id"])
+        
+        if covered_by:
+            categories[vuln_type]["covered"] += 1
+            covered.append({
+                "id": discovery["id"],
+                "title": discovery.get("title", "")[:80],
+                "covered_by": covered_by,
+                "module_name": SCANNER_MODULES[covered_by]["name"]
+            })
+        else:
+            categories[vuln_type]["uncovered"] += 1
+            uncovered.append({
+                "id": discovery["id"],
+                "title": discovery.get("title", "")[:80],
+                "suggested_module": suggest_module(text),
+                "category": discovery.get("category", ""),
+                "status": discovery.get("status", "new")
+            })
+    
+    analysis = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "total_discoveries": len(all_discoveries),
+        "covered_count": len(covered),
+        "uncovered_count": len(uncovered),
+        "coverage_percentage": round(len(covered) / max(len(all_discoveries), 1) * 100, 1),
+        "categories": categories,
+        "covered": covered[:20],  # Top 20
+        "uncovered": uncovered[:20],  # Top 20 uncovered
+        "modules": list(SCANNER_MODULES.keys()),
+        "module_details": SCANNER_MODULES
+    }
+    
+    return analysis
+
+
+def categorize_vuln_type(text: str) -> str:
+    """Categorize the vulnerability type."""
+    if any(kw in text for kw in ["dns", "dnssec", "domain name"]):
+        return "DNS Security"
+    elif any(kw in text for kw in ["ssl", "tls", "certificate", "cipher", "encryption"]):
+        return "SSL/TLS"
+    elif any(kw in text for kw in ["header", "hsts", "csp", "cors", "cookie"]):
+        return "HTTP Headers"
+    elif any(kw in text for kw in ["subdomain", "takeover", "dangling"]):
+        return "Subdomain Security"
+    elif any(kw in text for kw in ["spf", "dkim", "dmarc", "email", "smtp", "mail"]):
+        return "Email Security"
+    elif any(kw in text for kw in ["injection", "xss", "csrf", "sqli", "rce"]):
+        return "Web Application"
+    elif any(kw in text for kw in ["authentication", "oauth", "jwt", "session"]):
+        return "Authentication"
+    elif any(kw in text for kw in ["port", "network", "tcp", "udp", "firewall"]):
+        return "Network"
+    else:
+        return "Other"
+
+
+def suggest_module(text: str) -> str:
+    """Suggest a module name for uncovered vulnerability."""
+    if any(kw in text for kw in ["spf", "dkim", "dmarc", "email", "smtp"]):
+        return "email_security"
+    elif any(kw in text for kw in ["oauth", "jwt", "authentication", "session"]):
+        return "auth_checker"
+    elif any(kw in text for kw in ["api", "graphql", "rest"]):
+        return "api_security"
+    elif any(kw in text for kw in ["waf", "firewall", "bypass"]):
+        return "waf_detector"
+    elif any(kw in text for kw in ["container", "docker", "kubernetes"]):
+        return "container_security"
+    else:
+        return "custom_check"
 
 
 if __name__ == "__main__":
@@ -213,3 +351,16 @@ if __name__ == "__main__":
             print(f"  • [{f['category']}] {f['title'][:60]}...")
     else:
         print("\n✓ No new discoveries found.")
+    
+    # Output coverage analysis
+    analysis = agent_manager.get_coverage_analysis()
+    if analysis:
+        print(f"\n📊 Coverage Analysis:")
+        print(f"   Total: {analysis.get('total_discoveries', 0)} discoveries")
+        print(f"   Covered: {analysis.get('covered_count', 0)} ({analysis.get('coverage_percentage', 0)}%)")
+        print(f"   Uncovered: {analysis.get('uncovered_count', 0)}")
+        
+        if analysis.get("uncovered"):
+            print(f"\n⚠️  Need Implementation:")
+            for item in analysis["uncovered"][:5]:
+                print(f"   • {item['title'][:50]}... → {item['suggested_module']}")

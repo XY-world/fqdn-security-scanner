@@ -60,6 +60,9 @@ class AgentManager:
         self.state_file = DATA_DIR / "agent_states.json"
         self.activity_file = DATA_DIR / "agent_activity.json"
         self.discoveries_file = DATA_DIR / "discoveries.json"
+        self.analysis_file = DATA_DIR / "coverage_analysis.json"
+        
+        self.coverage_analysis = {}
         
         # Initialize default agents
         self.agents = {
@@ -110,6 +113,12 @@ class AgentManager:
                 self.discoveries = json.loads(self.discoveries_file.read_text())[-50:]  # Keep last 50
         except Exception:
             self.discoveries = []
+        
+        try:
+            if self.analysis_file.exists():
+                self.coverage_analysis = json.loads(self.analysis_file.read_text())
+        except Exception:
+            self.coverage_analysis = {}
     
     def _save_state(self):
         """Persist state to disk."""
@@ -118,6 +127,8 @@ class AgentManager:
             self.state_file.write_text(json.dumps(state_data, indent=2))
             self.activity_file.write_text(json.dumps(self.activities[-100:], indent=2))
             self.discoveries_file.write_text(json.dumps(self.discoveries[-50:], indent=2))
+            if self.coverage_analysis:
+                self.analysis_file.write_text(json.dumps(self.coverage_analysis, indent=2))
         except Exception as e:
             print(f"Error saving agent state: {e}")
     
@@ -193,6 +204,15 @@ class AgentManager:
                 self._save_state()
                 return True
         return False
+    
+    def set_coverage_analysis(self, analysis: dict):
+        """Set the coverage analysis results."""
+        self.coverage_analysis = analysis
+        self._save_state()
+    
+    def get_coverage_analysis(self) -> dict:
+        """Get the latest coverage analysis."""
+        return self.coverage_analysis
 
 
 # Global instance
