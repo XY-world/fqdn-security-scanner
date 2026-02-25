@@ -47,223 +47,214 @@
 
         <main class="max-w-7xl mx-auto px-4 py-8">
             
-            <!-- Agent Orchestra Panel -->
-            <div v-if="activeTab === 'agents'" class="space-y-6">
-                <!-- Agent Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div v-for="(agent, key) in agents" :key="key"
-                         class="bg-gray-800 rounded-xl p-5 border border-gray-700 hover:border-gray-600 transition">
-                        <div class="flex items-center justify-between mb-3">
+            <!-- Agent Orchestra Panel - Three Column Layout -->
+            <div v-if="activeTab === 'agents'" class="grid grid-cols-12 gap-4 h-[calc(100vh-120px)]">
+                
+                <!-- LEFT: Agent List -->
+                <div class="col-span-3 bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
+                    <div class="px-4 py-3 border-b border-gray-700">
+                        <h3 class="text-sm font-semibold text-gray-300">🤖 Agents</h3>
+                    </div>
+                    <div class="flex-1 overflow-y-auto">
+                        <div v-for="(agent, key) in agents" :key="key"
+                             @click="selectedAgent = key"
+                             class="px-4 py-3 border-b border-gray-700/50 cursor-pointer hover:bg-gray-750 transition"
+                             :class="{ 'bg-blue-900/30 border-l-2 border-l-blue-500': selectedAgent === key }">
                             <div class="flex items-center space-x-3">
-                                <span class="text-2xl">[[ agent.icon ]]</span>
-                                <div>
-                                    <h3 class="font-semibold">[[ agent.display_name ]]</h3>
+                                <span class="text-xl">[[ agent.icon ]]</span>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm truncate">[[ agent.display_name ]]</h4>
                                     <div class="flex items-center space-x-2 text-xs text-gray-400">
                                         <span class="status-dot" :class="'status-' + agent.status"></span>
                                         <span class="capitalize">[[ agent.status ]]</span>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="text-sm text-gray-400 mb-3" v-if="agent.last_run">
-                            Last run: [[ formatTimeAgo(agent.last_run) ]]
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-2 text-sm">
-                            <template v-if="key === 'discovery'">
-                                <div class="bg-gray-900 rounded px-2 py-1">
-                                    <span class="text-gray-500">Discoveries</span>
-                                    <span class="float-right font-medium">[[ agent.stats?.discoveries || 0 ]]</span>
-                                </div>
-                            </template>
-                            <template v-if="key === 'scanner'">
-                                <div class="bg-gray-900 rounded px-2 py-1">
-                                    <span class="text-gray-500">Scans</span>
-                                    <span class="float-right font-medium">[[ agent.stats?.scans_completed || 0 ]]</span>
-                                </div>
-                                <div class="bg-gray-900 rounded px-2 py-1">
-                                    <span class="text-gray-500">Modules</span>
-                                    <span class="float-right font-medium">[[ moduleCount ]]</span>
-                                </div>
-                            </template>
-                            <template v-if="key === 'pr_agent'">
-                                <div class="bg-gray-900 rounded px-2 py-1">
-                                    <span class="text-gray-500">PRs Opened</span>
-                                    <span class="float-right font-medium">[[ agent.stats?.prs_opened || 0 ]]</span>
-                                </div>
-                                <div class="bg-gray-900 rounded px-2 py-1">
-                                    <span class="text-gray-500">Merged</span>
-                                    <span class="float-right font-medium">[[ agent.stats?.prs_merged || 0 ]]</span>
-                                </div>
-                            </template>
-                        </div>
-                        
-                        <!-- Quick Actions -->
-                        <div class="mt-3 pt-3 border-t border-gray-700">
-                            <button v-if="key === 'discovery'" @click="triggerDiscovery"
-                                    class="text-xs bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded transition">
-                                🔍 Run Discovery
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Coverage Analysis Panel -->
-                <div v-if="coverage && coverage.total_discoveries > 0" class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-700">
-                        <h3 class="text-lg font-semibold">📊 Coverage Analysis</h3>
-                    </div>
-                    <div class="p-6">
-                        <!-- Coverage Stats -->
-                        <div class="grid grid-cols-4 gap-4 mb-6">
-                            <div class="bg-gray-900 rounded-lg p-4 text-center">
-                                <div class="text-2xl font-bold">[[ coverage.total_discoveries ]]</div>
-                                <div class="text-xs text-gray-400">Total</div>
-                            </div>
-                            <div class="bg-gray-900 rounded-lg p-4 text-center">
-                                <div class="text-2xl font-bold text-green-400">[[ coverage.covered_count ]]</div>
-                                <div class="text-xs text-gray-400">Covered</div>
-                            </div>
-                            <div class="bg-gray-900 rounded-lg p-4 text-center">
-                                <div class="text-2xl font-bold text-red-400">[[ coverage.uncovered_count ]]</div>
-                                <div class="text-xs text-gray-400">Uncovered</div>
-                            </div>
-                            <div class="bg-gray-900 rounded-lg p-4 text-center">
-                                <div class="text-2xl font-bold" :class="coverage.coverage_percentage >= 70 ? 'text-green-400' : coverage.coverage_percentage >= 40 ? 'text-yellow-400' : 'text-red-400'">
-                                    [[ coverage.coverage_percentage ]]%
-                                </div>
-                                <div class="text-xs text-gray-400">Coverage</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Progress Bar -->
-                        <div class="mb-6">
-                            <div class="flex justify-between text-xs text-gray-400 mb-1">
-                                <span>Scanner Module Coverage</span>
-                                <span>[[ coverage.covered_count ]] / [[ coverage.total_discoveries ]]</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-3">
-                                <div class="h-3 rounded-full transition-all duration-500"
-                                     :class="coverage.coverage_percentage >= 70 ? 'bg-green-500' : coverage.coverage_percentage >= 40 ? 'bg-yellow-500' : 'bg-red-500'"
-                                     :style="{ width: coverage.coverage_percentage + '%' }"></div>
-                            </div>
-                        </div>
-                        
-                        <!-- Categories Breakdown -->
-                        <div class="mb-6">
-                            <h4 class="text-sm font-medium text-gray-300 mb-3">Vulnerability Categories</h4>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                                <div v-for="(cat, name) in coverage.categories" :key="name"
-                                     class="bg-gray-900 rounded px-3 py-2">
-                                    <div class="text-xs text-gray-400">[[ name ]]</div>
-                                    <div class="flex items-center space-x-2 mt-1">
-                                        <span class="text-sm font-medium">[[ cat.count ]]</span>
-                                        <span class="text-xs" :class="cat.uncovered > 0 ? 'text-red-400' : 'text-green-400'">
-                                            ([[ cat.uncovered ]] uncovered)
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Uncovered Items - Grouped by Suggested Module -->
-                        <div v-if="coverage.uncovered && coverage.uncovered.length > 0">
-                            <h4 class="text-sm font-medium text-gray-300 mb-3">⚠️ Need New Modules ([[ coverage.uncovered_count ]])</h4>
-                            <div class="space-y-3 max-h-64 overflow-y-auto">
-                                <div v-for="(items, moduleName) in groupedUncovered" :key="moduleName"
-                                     class="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-3 cursor-pointer hover:bg-red-900/30 transition"
-                                     :class="{ 'ring-2 ring-blue-500': selectedModuleFilter === moduleName }"
-                                     @click="selectedModuleFilter = moduleName">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <div class="flex items-center space-x-2">
-                                            <span class="text-blue-400 font-medium">[[ moduleName ]]</span>
-                                            <span class="text-xs bg-red-800/50 px-2 py-0.5 rounded">[[ items.length ]] discoveries</span>
-                                        </div>
-                                        <div class="flex space-x-2" @click.stop>
-                                            <button v-if="getGroupStatus(items) === 'new'"
-                                                    @click="reviewGroup(items)"
-                                                    class="text-xs bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded whitespace-nowrap">
-                                                Review All
-                                            </button>
-                                            <button v-if="getGroupStatus(items) === 'reviewing'"
-                                                    @click="triggerPRAgent(items[0].id)"
-                                                    class="text-xs bg-green-600 hover:bg-green-700 px-3 py-1 rounded whitespace-nowrap">
-                                                🔧 Implement
-                                            </button>
-                                            <span v-if="getGroupStatus(items) === 'implemented'" class="text-xs text-green-400">✓ Done</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-xs text-gray-400 space-y-1">
-                                        <div v-for="item in items.slice(0, 3)" :key="item.id" class="truncate">
-                                            • [[ item.title ]]
-                                        </div>
-                                        <div v-if="items.length > 3" class="text-gray-500">
-                                            ...and [[ items.length - 3 ]] more
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Quick Stats -->
+                            <div class="mt-2 flex space-x-2 text-xs">
+                                <template v-if="key === 'discovery'">
+                                    <span class="bg-gray-900 px-2 py-0.5 rounded">[[ agent.stats?.discoveries || 0 ]] discoveries</span>
+                                </template>
+                                <template v-if="key === 'scanner'">
+                                    <span class="bg-gray-900 px-2 py-0.5 rounded">[[ moduleCount ]] modules</span>
+                                </template>
+                                <template v-if="key === 'pr_agent'">
+                                    <span class="bg-gray-900 px-2 py-0.5 rounded">[[ agent.stats?.prs_opened || 0 ]] PRs</span>
+                                </template>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Discoveries Panel -->
-                <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-700 flex items-center justify-between">
-                        <h3 class="text-lg font-semibold">
-                            📢 Recent Discoveries
-                            <span v-if="selectedModuleFilter" class="text-sm font-normal text-blue-400 ml-2">
-                                (filtered: [[ selectedModuleFilter ]])
-                                <button @click="selectedModuleFilter = null" class="text-gray-400 hover:text-white ml-1">✕</button>
-                            </span>
+                <!-- CENTER: Agent Content -->
+                <div class="col-span-6 bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
+                    <div class="px-4 py-3 border-b border-gray-700 flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-gray-300">
+                            [[ agents[selectedAgent]?.icon ]] [[ agents[selectedAgent]?.display_name ]]
                         </h3>
-                        <span class="text-xs text-gray-500">[[ filteredDiscoveries.length ]] items</span>
+                        <button v-if="selectedAgent === 'discovery'" @click="triggerDiscovery"
+                                class="text-xs bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded transition">
+                            🔍 Run Discovery
+                        </button>
                     </div>
-                    <div v-if="filteredDiscoveries.length === 0" class="px-6 py-8 text-center text-gray-500">
-                        <span v-if="selectedModuleFilter">No discoveries for this module.</span>
-                        <span v-else>No discoveries yet. Run the Discovery Agent to find new vulnerabilities.</span>
-                    </div>
-                    <div v-else class="divide-y divide-gray-700 max-h-96 overflow-y-auto">
-                        <div v-for="discovery in filteredDiscoveries" :key="discovery.id"
-                             class="px-6 py-4 hover:bg-gray-750 transition">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1">
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <span class="text-xs px-2 py-0.5 rounded capitalize"
-                                              :class="categoryClass(discovery.category)">
-                                            [[ discovery.category ]]
-                                        </span>
+                    <div class="flex-1 overflow-y-auto p-4">
+                        
+                        <!-- Discovery Agent Content -->
+                        <template v-if="selectedAgent === 'discovery'">
+                            <!-- Coverage Stats -->
+                            <div v-if="coverage && coverage.total_discoveries > 0" class="mb-6">
+                                <div class="grid grid-cols-4 gap-3 mb-4">
+                                    <div class="bg-gray-900 rounded-lg p-3 text-center">
+                                        <div class="text-xl font-bold">[[ coverage.total_discoveries ]]</div>
+                                        <div class="text-xs text-gray-400">Total</div>
                                     </div>
-                                    <h4 class="font-medium">[[ discovery.title ]]</h4>
-                                    <p class="text-sm text-gray-400 mt-1">[[ discovery.description ]]</p>
-                                    <div class="text-xs text-gray-500 mt-2">
-                                        [[ formatTimeAgo(discovery.timestamp) ]] • 
-                                        <a :href="discovery.source" target="_blank" class="text-blue-400 hover:underline">Source</a>
+                                    <div class="bg-gray-900 rounded-lg p-3 text-center">
+                                        <div class="text-xl font-bold text-green-400">[[ coverage.covered_count ]]</div>
+                                        <div class="text-xs text-gray-400">Covered</div>
+                                    </div>
+                                    <div class="bg-gray-900 rounded-lg p-3 text-center">
+                                        <div class="text-xl font-bold text-red-400">[[ coverage.uncovered_count ]]</div>
+                                        <div class="text-xs text-gray-400">Uncovered</div>
+                                    </div>
+                                    <div class="bg-gray-900 rounded-lg p-3 text-center">
+                                        <div class="text-xl font-bold" :class="coverage.coverage_percentage >= 70 ? 'text-green-400' : 'text-yellow-400'">
+                                            [[ coverage.coverage_percentage ]]%
+                                        </div>
+                                        <div class="text-xs text-gray-400">Coverage</div>
                                     </div>
                                 </div>
+                                
+                                <!-- Progress Bar -->
+                                <div class="mb-4">
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="h-2 rounded-full transition-all duration-500"
+                                             :class="coverage.coverage_percentage >= 70 ? 'bg-green-500' : 'bg-yellow-500'"
+                                             :style="{ width: coverage.coverage_percentage + '%' }"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Need New Modules -->
+                            <div v-if="coverage?.uncovered?.length > 0" class="mb-6">
+                                <h4 class="text-sm font-medium text-gray-300 mb-3">⚠️ Need New Modules</h4>
+                                <div class="space-y-2">
+                                    <div v-for="(items, moduleName) in groupedUncovered" :key="moduleName"
+                                         class="bg-red-900/20 border border-red-800/50 rounded-lg px-3 py-2">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-blue-400 font-medium text-sm">[[ moduleName ]]</span>
+                                                <span class="text-xs bg-red-800/50 px-2 py-0.5 rounded">[[ items.length ]]</span>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button v-if="getGroupStatus(items) === 'new'"
+                                                        @click="reviewGroup(items)"
+                                                        class="text-xs bg-yellow-600 hover:bg-yellow-700 px-2 py-1 rounded">
+                                                    Review
+                                                </button>
+                                                <button v-if="getGroupStatus(items) === 'reviewing'"
+                                                        @click="triggerPRAgent(items[0].id)"
+                                                        class="text-xs bg-green-600 hover:bg-green-700 px-2 py-1 rounded">
+                                                    🔧 Implement
+                                                </button>
+                                                <span v-if="getGroupStatus(items) === 'implemented'" class="text-xs text-green-400">✓</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recent Discoveries -->
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-300 mb-3">📢 Recent Discoveries</h4>
+                                <div v-if="discoveries.length === 0" class="text-center text-gray-500 py-8">
+                                    No discoveries yet. Click "Run Discovery" to search for vulnerabilities.
+                                </div>
+                                <div v-else class="space-y-2">
+                                    <div v-for="d in discoveries.slice(0, 10)" :key="d.id"
+                                         class="bg-gray-900 rounded px-3 py-2">
+                                        <div class="flex items-center space-x-2 mb-1">
+                                            <span class="text-xs px-1.5 py-0.5 rounded" :class="categoryClass(d.category)">[[ d.category ]]</span>
+                                        </div>
+                                        <div class="text-sm font-medium truncate">[[ d.title ]]</div>
+                                        <div class="text-xs text-gray-500">[[ formatTimeAgo(d.timestamp) ]]</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        
+                        <!-- Scanner Agent Content: Module List -->
+                        <template v-if="selectedAgent === 'scanner'">
+                            <h4 class="text-sm font-medium text-gray-300 mb-4">📦 Available Modules ([[ moduleCount ]])</h4>
+                            <div class="space-y-3">
+                                <div v-for="(info, key) in modules" :key="key"
+                                     class="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                                    <div class="flex items-center space-x-3 mb-2">
+                                        <span class="text-xl">[[ info.icon ]]</span>
+                                        <div>
+                                            <h5 class="font-medium">[[ info.name ]]</h5>
+                                            <span class="text-xs text-gray-500">Module: [[ key ]]</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-400">[[ getModuleDescription(key) ]]</p>
+                                </div>
+                            </div>
+                            
+                            <div v-if="moduleCount === 0" class="text-center text-gray-500 py-8">
+                                No modules available. Use Discovery Agent to find vulnerabilities, then implement modules.
+                            </div>
+                        </template>
+                        
+                        <!-- PR Agent Content -->
+                        <template v-if="selectedAgent === 'pr_agent'">
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="bg-gray-900 rounded-lg p-4 text-center">
+                                    <div class="text-2xl font-bold text-blue-400">[[ agents.pr_agent?.stats?.prs_opened || 0 ]]</div>
+                                    <div class="text-xs text-gray-400">Modules Created</div>
+                                </div>
+                                <div class="bg-gray-900 rounded-lg p-4 text-center">
+                                    <div class="text-2xl font-bold text-green-400">[[ agents.pr_agent?.stats?.prs_merged || 0 ]]</div>
+                                    <div class="text-xs text-gray-400">PRs Merged</div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="text-sm font-medium text-gray-300 mb-3">🔧 Recent Implementations</h4>
+                            <div v-if="!implementedDiscoveries.length" class="text-center text-gray-500 py-8">
+                                No modules implemented yet. Review discoveries and click "Implement" to generate modules.
+                            </div>
+                            <div v-else class="space-y-2">
+                                <div v-for="d in implementedDiscoveries" :key="d.id"
+                                     class="bg-green-900/20 border border-green-800/50 rounded px-3 py-2">
+                                    <div class="text-sm font-medium truncate">[[ d.title ]]</div>
+                                    <div class="text-xs text-green-400">✓ Implemented</div>
+                                </div>
+                            </div>
+                        </template>
+                        
+                    </div>
+                </div>
+                
+                <!-- RIGHT: Activity Stream -->
+                <div class="col-span-3 bg-gray-800 rounded-xl border border-gray-700 overflow-hidden flex flex-col">
+                    <div class="px-4 py-3 border-b border-gray-700">
+                        <h3 class="text-sm font-semibold text-gray-300">🔄 Activity</h3>
+                    </div>
+                    <div class="flex-1 overflow-y-auto">
+                        <div v-if="activities.length === 0" class="px-4 py-8 text-center text-gray-500 text-sm">
+                            No recent activity.
+                        </div>
+                        <div v-else>
+                            <div v-for="(activity, idx) in activities" :key="idx"
+                                 class="px-4 py-2 text-xs border-b border-gray-700/50 hover:bg-gray-750">
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span>[[ getAgentIcon(activity.agent) ]]</span>
+                                    <span class="text-gray-500">[[ formatTime(activity.timestamp) ]]</span>
+                                </div>
+                                <div class="text-gray-300">[[ activity.message ]]</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Activity Stream -->
-                <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-700">
-                        <h3 class="text-lg font-semibold">🔄 Agent Activity Stream</h3>
-                    </div>
-                    <div v-if="activities.length === 0" class="px-6 py-8 text-center text-gray-500">
-                        No recent activity. Agents are standing by.
-                    </div>
-                    <div v-else class="max-h-64 overflow-y-auto">
-                        <div v-for="(activity, idx) in activities" :key="idx"
-                             class="px-6 py-2 text-sm border-b border-gray-700/50 hover:bg-gray-750">
-                            <span class="text-gray-500">[[ formatTime(activity.timestamp) ]]</span>
-                            <span class="mx-2">[[ getAgentIcon(activity.agent) ]]</span>
-                            <span>[[ activity.message ]]</span>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             <!-- Scanner Tab -->
@@ -435,17 +426,43 @@
                 const discoveries = ref([]);
                 const coverage = ref(null);
                 const selectedModuleFilter = ref(null);
+                const selectedAgent = ref('discovery');  // Default selected agent
                 
                 // Computed: filtered discoveries by selected module
                 const filteredDiscoveries = computed(() => {
                     if (!selectedModuleFilter.value) return discoveries.value;
                     return discoveries.value.filter(d => {
-                        // Match by suggested_module from coverage data
                         const uncovered = coverage.value?.uncovered || [];
                         const matchedItem = uncovered.find(u => u.id === d.id);
                         return matchedItem && matchedItem.suggested_module === selectedModuleFilter.value;
                     });
                 });
+                
+                // Computed: implemented discoveries for PR Agent
+                const implementedDiscoveries = computed(() => {
+                    return discoveries.value.filter(d => d.status === 'implemented');
+                });
+                
+                // Module descriptions
+                const moduleDescriptions = {
+                    dns: "Checks DNS security configuration including DNSSEC, SPF, DKIM, DMARC, and CAA records.",
+                    ssl: "Analyzes SSL/TLS configuration, certificate validity, and protocol versions.",
+                    headers: "Inspects HTTP security headers like HSTS, CSP, X-Frame-Options, and more.",
+                    ports: "Scans common ports to identify open services and potential vulnerabilities.",
+                    subdomains: "Enumerates subdomains and checks for subdomain takeover vulnerabilities.",
+                    vulns: "Detects common vulnerabilities like exposed sensitive files and version leaks."
+                };
+                
+                const getModuleDescription = (key) => {
+                    // Check static descriptions first
+                    if (moduleDescriptions[key]) return moduleDescriptions[key];
+                    // Dynamic modules - extract type from key
+                    if (key.startsWith('ssl_')) return "SSL/TLS security scanner - checks protocol versions and certificate configuration.";
+                    if (key.startsWith('headers_')) return "HTTP security headers scanner - checks for missing security headers.";
+                    if (key.startsWith('email_')) return "Email security scanner - validates SPF, DKIM, and DMARC configuration.";
+                    if (key.startsWith('subdomain_')) return "Subdomain security scanner - detects subdomain takeover risks.";
+                    return "Security scanner module generated by PR Agent.";
+                };
                 
                 // Fetch agent data
                 const fetchAgents = async () => {
@@ -708,7 +725,8 @@
                     activeTab, target, timeout, modules, selectedModules,
                     scanning, progress, currentModule, results, expandedFindings,
                     agents, activities, discoveries, coverage,
-                    selectedModuleFilter, filteredDiscoveries,
+                    selectedModuleFilter, filteredDiscoveries, selectedAgent,
+                    implementedDiscoveries, getModuleDescription,
                     moduleCount, groupedUncovered, getGroupStatus, reviewGroup,
                     toggleModule, startScan, toggleFinding,
                     severityIcon, severityBgClass, sortedFindings,
