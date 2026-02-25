@@ -265,39 +265,54 @@ def update_discovery(discovery_id):
 
 @app.route("/api/agents/discovery/trigger", methods=["POST"])
 def trigger_discovery():
-    """Manually trigger a discovery search (for demo/testing)."""
-    discovery_agent.start_search()
+    """Trigger a real discovery search using web search."""
+    import subprocess
+    import threading
     
-    # Add a sample discovery for demo
-    data = request.json or {}
-    if data.get("demo"):
-        discovery_agent.add_finding(
-            title="Demo: New TLS 1.3 Extension Vulnerability",
-            description="A new vulnerability in TLS 1.3 extension handling has been discovered that may allow...",
-            source="https://example.com/cve-2026-demo",
-            category="cve"
-        )
+    def run_discovery_async():
+        try:
+            subprocess.run(
+                ["python3", "agents/discovery_runner.py"],
+                cwd=str(Path(__file__).parent.parent),
+                timeout=120
+            )
+        except Exception as e:
+            agent_manager.update_agent_status("discovery", "error", str(e))
     
-    discovery_agent.complete_search(1 if data.get("demo") else 0)
-    return jsonify({"success": True, "message": "Discovery search triggered"})
+    # Run in background thread
+    thread = threading.Thread(target=run_discovery_async)
+    thread.start()
+    
+    return jsonify({"success": True, "message": "Discovery search started"})
 
 
 @app.route("/api/agents/pr/trigger", methods=["POST"])
 def trigger_pr_agent():
-    """Manually trigger the PR agent (for demo/testing)."""
+    """Trigger the PR agent to process a discovery."""
+    import subprocess
+    import threading
+    
     data = request.json or {}
     discovery_id = data.get("discovery_id")
     
-    if discovery_id:
-        pr_agent.start_task(f"Processing discovery #{discovery_id}")
-        pr_agent.queue_detection_module(discovery_id, {
-            "name": "TLS Extension Check",
-            "description": "Check for TLS 1.3 extension vulnerability"
-        })
-        pr_agent.complete_task("Module code generated")
-        return jsonify({"success": True, "message": "PR agent task completed"})
+    if not discovery_id:
+        return jsonify({"error": "discovery_id is required"}), 400
     
-    return jsonify({"error": "discovery_id is required"}), 400
+    def run_pr_agent_async(disc_id):
+        try:
+            subprocess.run(
+                ["python3", "agents/pr_agent_runner.py", str(disc_id)],
+                cwd=str(Path(__file__).parent.parent),
+                timeout=120
+            )
+        except Exception as e:
+            agent_manager.update_agent_status("pr_agent", "error", str(e))
+    
+    # Run in background thread
+    thread = threading.Thread(target=run_pr_agent_async, args=(discovery_id,))
+    thread.start()
+    
+    return jsonify({"success": True, "message": f"PR agent processing discovery #{discovery_id}"})
 
 
 if __name__ == "__main__":

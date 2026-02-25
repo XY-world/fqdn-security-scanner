@@ -380,7 +380,7 @@
                         await fetch('api/agents/discovery/trigger', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ demo: true })
+                            body: JSON.stringify({})
                         });
                         await refreshAgentData();
                     } catch (e) { console.error('Trigger discovery error:', e); }

@@ -34,5 +34,221 @@
     "source": "https://example.com/cve-2026-demo",
     "category": "cve",
     "status": "implemented"
+  },
+  {
+    "id": 5,
+    "timestamp": "2026-02-25T07:00:03.984247+00:00",
+    "title": "Demo: New TLS 1.3 Extension Vulnerability",
+    "description": "A new vulnerability in TLS 1.3 extension handling has been discovered that may allow...",
+    "source": "https://example.com/cve-2026-demo",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 6,
+    "timestamp": "2026-02-25T07:03:28.990553+00:00",
+    "title": "CVE-2022-23632: Traefik is an HTTP reverse proxy and load balancer. Prior to version 2.6.1, Traefik skips the router",
+    "description": "Traefik is an HTTP reverse proxy and load balancer. Prior to version 2.6.1, Traefik skips the router transport layer security (TLS) configuration when the host header is a fully qualified domain name (FQDN). For a request, the TLS configuration choice can be different than the router choice, which implies the use of a wrong TLS configuration. When sending a request using FQDN handled by a router configured with a dedicated TLS configuration, the TLS configuration falls back to the default config",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2022-23632",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 7,
+    "timestamp": "2026-02-25T07:03:28.992228+00:00",
+    "title": "Fickling: OBJ opcode call invisibility bypasses all safety checks",
+    "description": "# Assessment\n\nThe interpreter so it behaves closer to CPython when dealing with `OBJ`, `NEWOBJ`, and `NEWOBJ_EX` opcodes (https://github.com/trailofbits/fickling/commit/ff423dade2bb1f72b2b48586c022fac40cbd9a4a).\n\n# Original report\n\n## Summary\n\nAll 5 of fickling's safety interfaces -- `is_likely_safe()`, `check_safety()`, CLI `--check-safety`, `always_check_safety()`, and the `check_safety()` context manager -- report `LIKELY_SAFE` / raise no exceptions for pickle files that use the OBJ opcode to",
+    "source": "https://github.com/advisories/GHSA-mxhj-88fx-4pcv",
+    "category": "technique",
+    "status": "new"
+  },
+  {
+    "id": 8,
+    "timestamp": "2026-02-25T07:03:30.728357+00:00",
+    "title": "CVE-1999-0622: Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: None.  Reason: this candidate is sol",
+    "description": "Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: None.  Reason: this candidate is solely about a configuration that does not directly introduce security vulnerabilities, so it is more appropriate to cover under the Common Configuration Enumeration (CCE).  Notes: the former description is: \"A component service related to DNS service is running.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-1999-0622",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 9,
+    "timestamp": "2026-02-25T07:03:30.730242+00:00",
+    "title": "CVE-2002-0990: The web proxy component in Symantec Enterprise Firewall (SEF) 6.5.2 through 7.0, Raptor Firewall 6.5",
+    "description": "The web proxy component in Symantec Enterprise Firewall (SEF) 6.5.2 through 7.0, Raptor Firewall 6.5 and 6.5.3, VelociRaptor, and Symantec Gateway Security allow remote attackers to cause a denial of service (connection resource exhaustion) via multiple connection requests to domains whose DNS server is unresponsive or does not exist, which generates a long timeout.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2002-0990",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 10,
+    "timestamp": "2026-02-25T07:03:30.731582+00:00",
+    "title": "CVE-2003-0011: Unknown vulnerability in the DNS intrusion detection application filter for Microsoft Internet Secur",
+    "description": "Unknown vulnerability in the DNS intrusion detection application filter for Microsoft Internet Security and Acceleration (ISA) Server 2000 allows remote attackers to cause a denial of service (blocked traffic to DNS servers) via a certain type of incoming DNS request that is not properly handled.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2003-0011",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 11,
+    "timestamp": "2026-02-25T07:03:32.449480+00:00",
+    "title": "CVE-2003-0131: The SSL and TLS components for OpenSSL 0.9.6i and earlier, 0.9.7, and 0.9.7a allow remote attackers ",
+    "description": "The SSL and TLS components for OpenSSL 0.9.6i and earlier, 0.9.7, and 0.9.7a allow remote attackers to perform an unauthorized RSA private key operation via a modified Bleichenbacher attack that uses a large number of SSL or TLS connections using PKCS #1 v1.5 padding that cause OpenSSL to leak information regarding the relationship between ciphertext and the associated plaintext, aka the \"Klima-Pokorny-Rosa attack.\"",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2003-0131",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 12,
+    "timestamp": "2026-02-25T07:03:32.451410+00:00",
+    "title": "CVE-2006-2924: Ingate Firewall in the SIP module before 4.4.1 and SIParator before 4.4.1, when TLS is enabled or wh",
+    "description": "Ingate Firewall in the SIP module before 4.4.1 and SIParator before 4.4.1, when TLS is enabled or when SSL/TLS is enabled in the web server, allows remote attackers to cause a denial of service (crash) via a crafted SSL/TLS handshake.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2006-2924",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 13,
+    "timestamp": "2026-02-25T07:03:32.453151+00:00",
+    "title": "CVE-2007-2593: The Terminal Server in Microsoft Windows 2003 Server, when using TLS, allows remote attackers to byp",
+    "description": "The Terminal Server in Microsoft Windows 2003 Server, when using TLS, allows remote attackers to bypass SSL and self-signed certificate requirements, downgrade the server security, and possibly conduct man-in-the-middle attacks via unspecified vectors, as demonstrated using the Remote Desktop Protocol (RDP) 6.0 client.  NOTE: a third party claims that the vendor may have fixed this in approximately 2006.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2007-2593",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 14,
+    "timestamp": "2026-02-25T07:03:34.198385+00:00",
+    "title": "CVE-1999-0633: Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: None.  Reason: this candidate is sol",
+    "description": "Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: None.  Reason: this candidate is solely about a configuration that does not directly introduce security vulnerabilities, so it is more appropriate to cover under the Common Configuration Enumeration (CCE).  Notes: the former description is: \"The HTTP/WWW service is running.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-1999-0633",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 15,
+    "timestamp": "2026-02-25T07:03:34.200236+00:00",
+    "title": "CVE-2000-0563: The URLConnection function in MacOS Runtime Java (MRJ) 2.1 and earlier and the Microsoft virtual mac",
+    "description": "The URLConnection function in MacOS Runtime Java (MRJ) 2.1 and earlier and the Microsoft virtual machine (VM) for MacOS allows a malicious web site operator to connect to arbitrary hosts using a HTTP redirection, in violation of the Java security model.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2000-0563",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 16,
+    "timestamp": "2026-02-25T07:03:34.202225+00:00",
+    "title": "CVE-2001-1567: Lotus Domino server 5.0.9a and earlier allows remote attackers to bypass security restrictions and v",
+    "description": "Lotus Domino server 5.0.9a and earlier allows remote attackers to bypass security restrictions and view Notes database files and possibly sensitive Notes template files (.ntf) via an HTTP request with a large number of \"+\" characters before the .nsf file extension, which are converted to spaces by Domino.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2001-1567",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 17,
+    "timestamp": "2026-02-25T07:03:35.893534+00:00",
+    "title": "CVE-2017-14389: An issue was discovered in Cloud Foundry Foundation capi-release (all versions prior to 1.45.0), cf-",
+    "description": "An issue was discovered in Cloud Foundry Foundation capi-release (all versions prior to 1.45.0), cf-release (all versions prior to v280), and cf-deployment (all versions prior to v1.0.0). The Cloud Controller does not prevent space developers from creating subdomains to an already existing route that belongs to a different user in a different org and space, aka an \"Application Subdomain Takeover.\"",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2017-14389",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 18,
+    "timestamp": "2026-02-25T07:03:35.895341+00:00",
+    "title": "CVE-2023-36474: Interactsh is an open-source tool for detecting out-of-band interactions. Domains configured with in",
+    "description": "Interactsh is an open-source tool for detecting out-of-band interactions. Domains configured with interactsh server prior to version 1.0.0 were vulnerable to subdomain takeover for a specific subdomain, i.e `app.` Interactsh server used to create cname entries for `app` pointing to `projectdiscovery.github.io` as default, which intended to used for hosting interactsh web client using GitHub pages. This is a security issue with a self-hosted interactsh server in which the user may not have config",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2023-36474",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 19,
+    "timestamp": "2026-02-25T07:03:35.896569+00:00",
+    "title": "CVE-2024-5528: An issue was discovered in GitLab CE/EE affecting all versions prior to 16.11.6, starting from 17.0 ",
+    "description": "An issue was discovered in GitLab CE/EE affecting all versions prior to 16.11.6, starting from 17.0 prior to 17.0.4, and starting from 17.1 prior to 17.1.2, which allows a subdomain takeover in GitLab Pages.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2024-5528",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 20,
+    "timestamp": "2026-02-25T07:03:37.873526+00:00",
+    "title": "CVE-2009-4022: Unspecified vulnerability in ISC BIND 9.0.x through 9.3.x, 9.4 before 9.4.3-P4, 9.5 before 9.5.2-P1,",
+    "description": "Unspecified vulnerability in ISC BIND 9.0.x through 9.3.x, 9.4 before 9.4.3-P4, 9.5 before 9.5.2-P1, 9.6 before 9.6.1-P2, and 9.7 beta before 9.7.0b3, with DNSSEC validation enabled and checking disabled (CD), allows remote attackers to conduct DNS cache poisoning attacks by receiving a recursive client query and sending a response that contains an Additional section with crafted data, which is not properly handled when the response is processed \"at the same time as requesting DNSSEC records (DO",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2009-4022",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 21,
+    "timestamp": "2026-02-25T07:03:37.875848+00:00",
+    "title": "CVE-2010-0290: Unspecified vulnerability in ISC BIND 9.0.x through 9.3.x, 9.4 before 9.4.3-P5, 9.5 before 9.5.2-P2,",
+    "description": "Unspecified vulnerability in ISC BIND 9.0.x through 9.3.x, 9.4 before 9.4.3-P5, 9.5 before 9.5.2-P2, 9.6 before 9.6.1-P3, and 9.7.0 beta, with DNSSEC validation enabled and checking disabled (CD), allows remote attackers to conduct DNS cache poisoning attacks by receiving a recursive client query and sending a response that contains (1) CNAME or (2) DNAME records, which do not have the intended validation before caching, aka Bug 20737.  NOTE: this vulnerability exists because of an incomplete fi",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2010-0290",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 22,
+    "timestamp": "2026-02-25T07:03:37.877242+00:00",
+    "title": "CVE-2017-15107: A vulnerability was found in the implementation of DNSSEC in Dnsmasq up to and including 2.78. Wildc",
+    "description": "A vulnerability was found in the implementation of DNSSEC in Dnsmasq up to and including 2.78. Wildcard synthesized NSEC records could be improperly interpreted to prove the non-existence of hostnames that actually exist.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2017-15107",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 23,
+    "timestamp": "2026-02-25T07:03:39.545466+00:00",
+    "title": "CVE-2024-7208: A vulnerability in multi-tenant hosting allows an authenticated sender to spoof the identity of a sh",
+    "description": "A vulnerability in multi-tenant hosting allows an authenticated sender to spoof the identity of a shared, hosted domain, thus bypass security measures provided by DMARC (or SPF or DKIM) policies.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2024-7208",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 24,
+    "timestamp": "2026-02-25T07:03:39.547718+00:00",
+    "title": "CVE-2025-59419: Netty is an asynchronous, event-driven network application framework. In versions prior to 4.1.128.F",
+    "description": "Netty is an asynchronous, event-driven network application framework. In versions prior to 4.1.128.Final and 4.2.7.Final, the SMTP codec in Netty contains an SMTP command injection vulnerability due to insufficient input validation for Carriage Return (\\r) and Line Feed (\\n) characters in user-supplied parameters. The vulnerability exists in io.netty.handler.codec.smtp.DefaultSmtpRequest, where parameters are directly concatenated into the SMTP command string without sanitization. When methods s",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2025-59419",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 25,
+    "timestamp": "2026-02-25T07:03:39.549668+00:00",
+    "title": "CVE-2025-61084: MDaemon Mail Server 23.5.2 validates SPF, DKIM, and DMARC using the email enclosed in angle brackets",
+    "description": "MDaemon Mail Server 23.5.2 validates SPF, DKIM, and DMARC using the email enclosed in angle brackets (<>) in the From: header of SMTP DATA. An attacker can craft a From: header with multiple invisible Unicode thin spaces to display a spoofed sender while passing validation, allowing email spoofing even when anti-spoofing protections are in place. NOTE: this is disputed by the Supplier because UI spoofing occurs in a client, not in a server such as MDaemon's product or any other server implementa",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2025-61084",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 26,
+    "timestamp": "2026-02-25T07:03:41.238645+00:00",
+    "title": "CVE-2017-11364: The CMS installer in Joomla! before 3.7.4 does not verify a user's ownership of a webspace, which al",
+    "description": "The CMS installer in Joomla! before 3.7.4 does not verify a user's ownership of a webspace, which allows remote authenticated users to gain control of the target application by leveraging Certificate Transparency logs.",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2017-11364",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 27,
+    "timestamp": "2026-02-25T07:03:41.241132+00:00",
+    "title": "CVE-2022-23649: Cosign provides container signing, verification, and storage in an OCI registry for the sigstore pro",
+    "description": "Cosign provides container signing, verification, and storage in an OCI registry for the sigstore project. Prior to version 1.5.2, Cosign can be manipulated to claim that an entry for a signature exists in the Rekor transparency log even if it doesn't. This requires the attacker to have pull and push permissions for the signature in OCI. This can happen with both standard signing with a keypair and \"keyless signing\" with Fulcio. If an attacker has access to the signature in OCI, they can manipula",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2022-23649",
+    "category": "cve",
+    "status": "new"
+  },
+  {
+    "id": 28,
+    "timestamp": "2026-02-25T07:03:41.242661+00:00",
+    "title": "CVE-2022-36056: Cosign is a project under the sigstore organization which aims to make signatures invisible infrastr",
+    "description": "Cosign is a project under the sigstore organization which aims to make signatures invisible infrastructure. In versions prior to 1.12.0 a number of vulnerabilities have been found in cosign verify-blob, where Cosign would successfully verify an artifact when verification should have failed. First a cosign bundle can be crafted to successfully verify a blob even if the embedded rekorBundle does not reference the given signature. Second, when providing identity flags, the email and issuer of a cer",
+    "source": "https://nvd.nist.gov/vuln/detail/CVE-2022-36056",
+    "category": "cve",
+    "status": "new"
   }
 ]
