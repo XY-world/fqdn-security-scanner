@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="bg-gray-900 rounded px-2 py-1">
                                     <span class="text-gray-500">Modules</span>
-                                    <span class="float-right font-medium">[[ agent.stats?.available_modules || 6 ]]</span>
+                                    <span class="float-right font-medium">[[ moduleCount ]]</span>
                                 </div>
                             </template>
                             <template v-if="key === 'pr_agent'">
@@ -167,30 +167,38 @@
                             </div>
                         </div>
                         
-                        <!-- Uncovered Items -->
+                        <!-- Uncovered Items - Grouped by Suggested Module -->
                         <div v-if="coverage.uncovered && coverage.uncovered.length > 0">
-                            <h4 class="text-sm font-medium text-gray-300 mb-3">⚠️ Need New Modules ([[ coverage.uncovered.length ]])</h4>
-                            <div class="space-y-2 max-h-48 overflow-y-auto">
-                                <div v-for="item in coverage.uncovered" :key="item.id"
-                                     class="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-3 flex items-center justify-between">
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium truncate">[[ item.title ]]</div>
-                                        <div class="text-xs text-gray-400">
-                                            Suggested module: <span class="text-blue-400">[[ item.suggested_module ]]</span>
+                            <h4 class="text-sm font-medium text-gray-300 mb-3">⚠️ Need New Modules ([[ coverage.uncovered_count ]])</h4>
+                            <div class="space-y-3 max-h-64 overflow-y-auto">
+                                <div v-for="(items, moduleName) in groupedUncovered" :key="moduleName"
+                                     class="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-blue-400 font-medium">[[ moduleName ]]</span>
+                                            <span class="text-xs bg-red-800/50 px-2 py-0.5 rounded">[[ items.length ]] issues</span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button v-if="getGroupStatus(items) === 'new'"
+                                                    @click="reviewGroup(items)"
+                                                    class="text-xs bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded whitespace-nowrap">
+                                                Review All
+                                            </button>
+                                            <button v-if="getGroupStatus(items) === 'reviewing'"
+                                                    @click="triggerPRAgent(items[0].id)"
+                                                    class="text-xs bg-green-600 hover:bg-green-700 px-3 py-1 rounded whitespace-nowrap">
+                                                🔧 Implement
+                                            </button>
+                                            <span v-if="getGroupStatus(items) === 'implemented'" class="text-xs text-green-400">✓ Done</span>
                                         </div>
                                     </div>
-                                    <div class="flex space-x-2 ml-4">
-                                        <button v-if="item.status === 'new'"
-                                                @click="updateDiscoveryStatus(item.id, 'reviewing')"
-                                                class="text-xs bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded whitespace-nowrap">
-                                            Review
-                                        </button>
-                                        <button v-if="item.status === 'reviewing'"
-                                                @click="triggerPRAgent(item.id)"
-                                                class="text-xs bg-green-600 hover:bg-green-700 px-3 py-1 rounded whitespace-nowrap">
-                                            🔧 Implement
-                                        </button>
-                                        <span v-if="item.status === 'implemented'" class="text-xs text-green-400">✓ Done</span>
+                                    <div class="text-xs text-gray-400 space-y-1">
+                                        <div v-for="item in items.slice(0, 3)" :key="item.id" class="truncate">
+                                            • [[ item.title ]]
+                                        </div>
+                                        <div v-if="items.length > 3" class="text-gray-500">
+                                            ...and [[ items.length - 3 ]] more
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -654,6 +662,38 @@
                 
                 const formatTime = (isoString) => new Date(isoString).toLocaleString();
                 
+                // Computed: real-time module count
+                const moduleCount = computed(() => Object.keys(modules.value).length);
+                
+                // Computed: group uncovered items by suggested module
+                const groupedUncovered = computed(() => {
+                    if (!coverage.value?.uncovered) return {};
+                    const groups = {};
+                    for (const item of coverage.value.uncovered) {
+                        const mod = item.suggested_module || 'custom_check';
+                        if (!groups[mod]) groups[mod] = [];
+                        groups[mod].push(item);
+                    }
+                    return groups;
+                });
+                
+                // Helper: get overall status for a group
+                const getGroupStatus = (items) => {
+                    if (items.some(i => i.status === 'implemented')) return 'implemented';
+                    if (items.some(i => i.status === 'reviewing')) return 'reviewing';
+                    return 'new';
+                };
+                
+                // Review all items in a group
+                const reviewGroup = async (items) => {
+                    for (const item of items) {
+                        if (item.status === 'new') {
+                            await updateDiscoveryStatus(item.id, 'reviewing');
+                        }
+                    }
+                    await fetchCoverage();
+                };
+                
                 const downloadReport = (format) => {
                     if (!scanId.value) return;
                     window.open(`api/scan/${scanId.value}/report?format=${format}`, '_blank');
@@ -663,6 +703,7 @@
                     activeTab, target, timeout, modules, selectedModules,
                     scanning, progress, currentModule, results, expandedFindings,
                     agents, activities, discoveries, coverage,
+                    moduleCount, groupedUncovered, getGroupStatus, reviewGroup,
                     toggleModule, startScan, toggleFinding,
                     severityIcon, severityBgClass, sortedFindings,
                     riskColor, riskLevel, formatTime, formatTimeAgo, downloadReport,
