@@ -313,8 +313,20 @@ def get_discoveries():
 
 @app.route("/api/agents/coverage")
 def get_coverage():
-    """Get coverage analysis."""
-    return jsonify(agent_manager.get_coverage_analysis())
+    """Get coverage analysis with latest discovery statuses."""
+    coverage = agent_manager.get_coverage_analysis()
+    
+    # Merge latest discovery statuses into uncovered items
+    if coverage and coverage.get("uncovered"):
+        discoveries = agent_manager.get_discoveries(limit=100)
+        status_map = {d.get("id"): d.get("status", "new") for d in discoveries}
+        
+        for item in coverage["uncovered"]:
+            item_id = item.get("id")
+            if item_id in status_map:
+                item["status"] = status_map[item_id]
+    
+    return jsonify(coverage)
 
 
 @app.route("/api/agents/discoveries/<int:discovery_id>", methods=["PATCH"])
