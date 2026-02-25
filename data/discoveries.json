@@ -96,7 +96,7 @@
     "description": "Lotus Domino server 5.0.9a and earlier allows remote attackers to bypass security restrictions and view Notes database files and possibly sensitive Notes template files (.ntf) via an HTTP request with a large number of \"+\" characters before the .nsf file extension, which are converted to spaces by Domino.",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2001-1567",
     "category": "cve",
-    "status": "new"
+    "status": "reviewing"
   },
   {
     "id": 12,
@@ -105,7 +105,7 @@
     "description": "An issue was discovered in Cloud Foundry Foundation capi-release (all versions prior to 1.45.0), cf-release (all versions prior to v280), and cf-deployment (all versions prior to v1.0.0). The Cloud Controller does not prevent space developers from creating subdomains to an already existing route that belongs to a different user in a different org and space, aka an \"Application Subdomain Takeover.\"",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2017-14389",
     "category": "cve",
-    "status": "new"
+    "status": "reviewing"
   },
   {
     "id": 13,
@@ -159,7 +159,7 @@
     "description": "A vulnerability in multi-tenant hosting allows an authenticated sender to spoof the identity of a shared, hosted domain, thus bypass security measures provided by DMARC (or SPF or DKIM) policies.",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2024-7208",
     "category": "cve",
-    "status": "new"
+    "status": "reviewing"
   },
   {
     "id": 19,
@@ -168,7 +168,7 @@
     "description": "Netty is an asynchronous, event-driven network application framework. In versions prior to 4.1.128.Final and 4.2.7.Final, the SMTP codec in Netty contains an SMTP command injection vulnerability due to insufficient input validation for Carriage Return (\\r) and Line Feed (\\n) characters in user-supplied parameters. The vulnerability exists in io.netty.handler.codec.smtp.DefaultSmtpRequest, where parameters are directly concatenated into the SMTP command string without sanitization. When methods s",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2025-59419",
     "category": "cve",
-    "status": "new"
+    "status": "reviewing"
   },
   {
     "id": 20,
@@ -177,7 +177,7 @@
     "description": "MDaemon Mail Server 23.5.2 validates SPF, DKIM, and DMARC using the email enclosed in angle brackets (<>) in the From: header of SMTP DATA. An attacker can craft a From: header with multiple invisible Unicode thin spaces to display a spoofed sender while passing validation, allowing email spoofing even when anti-spoofing protections are in place. NOTE: this is disputed by the Supplier because UI spoofing occurs in a client, not in a server such as MDaemon's product or any other server implementa",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2025-61084",
     "category": "cve",
-    "status": "new"
+    "status": "reviewing"
   },
   {
     "id": 21,
@@ -204,6 +204,6 @@
     "description": "Cosign is a project under the sigstore organization which aims to make signatures invisible infrastructure. In versions prior to 1.12.0 a number of vulnerabilities have been found in cosign verify-blob, where Cosign would successfully verify an artifact when verification should have failed. First a cosign bundle can be crafted to successfully verify a blob even if the embedded rekorBundle does not reference the given signature. Second, when providing identity flags, the email and issuer of a cer",
     "source": "https://nvd.nist.gov/vuln/detail/CVE-2022-36056",
     "category": "cve",
-    "status": "implemented"
+    "status": "reviewing"
   }
 ]

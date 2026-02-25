@@ -172,13 +172,15 @@
                             <h4 class="text-sm font-medium text-gray-300 mb-3">⚠️ Need New Modules ([[ coverage.uncovered_count ]])</h4>
                             <div class="space-y-3 max-h-64 overflow-y-auto">
                                 <div v-for="(items, moduleName) in groupedUncovered" :key="moduleName"
-                                     class="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-3">
+                                     class="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-3 cursor-pointer hover:bg-red-900/30 transition"
+                                     :class="{ 'ring-2 ring-blue-500': selectedModuleFilter === moduleName }"
+                                     @click="selectedModuleFilter = moduleName">
                                     <div class="flex items-center justify-between mb-2">
                                         <div class="flex items-center space-x-2">
                                             <span class="text-blue-400 font-medium">[[ moduleName ]]</span>
-                                            <span class="text-xs bg-red-800/50 px-2 py-0.5 rounded">[[ items.length ]] issues</span>
+                                            <span class="text-xs bg-red-800/50 px-2 py-0.5 rounded">[[ items.length ]] discoveries</span>
                                         </div>
-                                        <div class="flex space-x-2">
+                                        <div class="flex space-x-2" @click.stop>
                                             <button v-if="getGroupStatus(items) === 'new'"
                                                     @click="reviewGroup(items)"
                                                     class="text-xs bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded whitespace-nowrap">
@@ -209,14 +211,21 @@
                 <!-- Discoveries Panel -->
                 <div class="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-700 flex items-center justify-between">
-                        <h3 class="text-lg font-semibold">📢 Recent Discoveries</h3>
-                        <span class="text-xs text-gray-500">[[ discoveries.length ]] items</span>
+                        <h3 class="text-lg font-semibold">
+                            📢 Recent Discoveries
+                            <span v-if="selectedModuleFilter" class="text-sm font-normal text-blue-400 ml-2">
+                                (filtered: [[ selectedModuleFilter ]])
+                                <button @click="selectedModuleFilter = null" class="text-gray-400 hover:text-white ml-1">✕</button>
+                            </span>
+                        </h3>
+                        <span class="text-xs text-gray-500">[[ filteredDiscoveries.length ]] items</span>
                     </div>
-                    <div v-if="discoveries.length === 0" class="px-6 py-8 text-center text-gray-500">
-                        No discoveries yet. Run the Discovery Agent to find new vulnerabilities.
+                    <div v-if="filteredDiscoveries.length === 0" class="px-6 py-8 text-center text-gray-500">
+                        <span v-if="selectedModuleFilter">No discoveries for this module.</span>
+                        <span v-else>No discoveries yet. Run the Discovery Agent to find new vulnerabilities.</span>
                     </div>
-                    <div v-else class="divide-y divide-gray-700">
-                        <div v-for="discovery in discoveries" :key="discovery.id"
+                    <div v-else class="divide-y divide-gray-700 max-h-96 overflow-y-auto">
+                        <div v-for="discovery in filteredDiscoveries" :key="discovery.id"
                              class="px-6 py-4 hover:bg-gray-750 transition">
                             <div class="flex items-start justify-between">
                                 <div class="flex-1">
@@ -225,10 +234,6 @@
                                               :class="categoryClass(discovery.category)">
                                             [[ discovery.category ]]
                                         </span>
-                                        <span class="text-xs px-2 py-0.5 rounded capitalize"
-                                              :class="statusClass(discovery.status)">
-                                            [[ discovery.status ]]
-                                        </span>
                                     </div>
                                     <h4 class="font-medium">[[ discovery.title ]]</h4>
                                     <p class="text-sm text-gray-400 mt-1">[[ discovery.description ]]</p>
@@ -236,18 +241,6 @@
                                         [[ formatTimeAgo(discovery.timestamp) ]] • 
                                         <a :href="discovery.source" target="_blank" class="text-blue-400 hover:underline">Source</a>
                                     </div>
-                                </div>
-                                <div class="flex space-x-2 ml-4">
-                                    <button v-if="discovery.status === 'new'" 
-                                            @click="updateDiscoveryStatus(discovery.id, 'reviewing')"
-                                            class="text-xs bg-yellow-600 hover:bg-yellow-700 px-2 py-1 rounded">
-                                        Review
-                                    </button>
-                                    <button v-if="discovery.status === 'reviewing'"
-                                            @click="triggerPRAgent(discovery.id)"
-                                            class="text-xs bg-green-600 hover:bg-green-700 px-2 py-1 rounded">
-                                        Implement
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -441,6 +434,18 @@
                 const activities = ref([]);
                 const discoveries = ref([]);
                 const coverage = ref(null);
+                const selectedModuleFilter = ref(null);
+                
+                // Computed: filtered discoveries by selected module
+                const filteredDiscoveries = computed(() => {
+                    if (!selectedModuleFilter.value) return discoveries.value;
+                    return discoveries.value.filter(d => {
+                        // Match by suggested_module from coverage data
+                        const uncovered = coverage.value?.uncovered || [];
+                        const matchedItem = uncovered.find(u => u.id === d.id);
+                        return matchedItem && matchedItem.suggested_module === selectedModuleFilter.value;
+                    });
+                });
                 
                 // Fetch agent data
                 const fetchAgents = async () => {
@@ -703,6 +708,7 @@
                     activeTab, target, timeout, modules, selectedModules,
                     scanning, progress, currentModule, results, expandedFindings,
                     agents, activities, discoveries, coverage,
+                    selectedModuleFilter, filteredDiscoveries,
                     moduleCount, groupedUncovered, getGroupStatus, reviewGroup,
                     toggleModule, startScan, toggleFinding,
                     severityIcon, severityBgClass, sortedFindings,
