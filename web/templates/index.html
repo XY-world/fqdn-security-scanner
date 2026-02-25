@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="bg-gray-900 rounded px-2 py-1">
                                     <span class="text-gray-500">Modules</span>
-                                    <span class="float-right font-medium">[[ agent.stats?.modules_added || 0 ]]</span>
+                                    <span class="float-right font-medium">[[ agent.stats?.available_modules || 6 ]]</span>
                                 </div>
                             </template>
                             <template v-if="key === 'pr_agent'">
