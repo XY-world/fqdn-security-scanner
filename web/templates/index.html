@@ -330,7 +330,7 @@
                     expandedFindings.value = [];
                     
                     try {
-                        const response = await fetch('/api/scan', {
+                        const response = await fetch('api/scan', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -355,7 +355,7 @@
                     if (!scanId.value) return;
                     
                     try {
-                        const response = await fetch(`/api/scan/${scanId.value}`);
+                        const response = await fetch(`api/scan/${scanId.value}`);
                         const data = await response.json();
                         
                         progress.value = data.progress || 0;
@@ -436,7 +436,7 @@
                 
                 const downloadReport = (format) => {
                     if (!scanId.value) return;
-                    window.open(`/api/scan/${scanId.value}/report?format=${format}`, '_blank');
+                    window.open(`api/scan/${scanId.value}/report?format=${format}`, '_blank');
                 };
                 
                 return {
