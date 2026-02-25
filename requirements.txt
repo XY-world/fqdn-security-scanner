@@ -1,0 +1,9 @@
+# FQDN Security Scanner Dependencies
+dnspython>=2.4.0
+requests>=2.31.0
+cryptography>=41.0.0
+ssl-cert-checker>=1.0.0
+python-nmap>=0.7.1
+rich>=13.0.0
+click>=8.1.0
+validators>=0.22.0
