@@ -76,7 +76,7 @@ class AgentManager:
                 name="scanner", 
                 display_name="Scanner Agent",
                 icon="🛡️",
-                stats={"scans_completed": 0, "available_modules": 6}  # dns, ssl, headers, ports, subdomains, vulns
+                stats={"scans_completed": 0, "available_modules": 1}  # Only dns for now
             ),
             "pr_agent": AgentState(
                 name="pr_agent",

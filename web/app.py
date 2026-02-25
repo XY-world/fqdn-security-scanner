@@ -7,6 +7,9 @@ A Flask-based web interface for the security scanner with multi-agent orchestrat
 
 import sys
 import os
+import importlib.util
+from pathlib import Path
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from flask import Flask, render_template, request, jsonify, Response
@@ -17,11 +20,6 @@ from concurrent.futures import ThreadPoolExecutor
 import threading
 
 from modules.dns_scanner import DNSScanner
-from modules.ssl_scanner import SSLScanner
-from modules.header_scanner import HeaderScanner
-from modules.port_scanner import PortScanner
-from modules.subdomain_scanner import SubdomainScanner
-from modules.vuln_scanner import VulnScanner
 from report.generator import ReportGenerator
 from agents.manager import agent_manager
 from agents.discovery import discovery_agent
@@ -34,14 +32,77 @@ CORS(app)
 scans = {}
 scan_lock = threading.Lock()
 
+# Base modules (always available)
 AVAILABLE_MODULES = {
     "dns": {"class": DNSScanner, "name": "DNS Security", "icon": "🌐"},
-    "ssl": {"class": SSLScanner, "name": "SSL/TLS", "icon": "🔒"},
-    "headers": {"class": HeaderScanner, "name": "HTTP Headers", "icon": "📋"},
-    "ports": {"class": PortScanner, "name": "Port Scan", "icon": "🚪"},
-    "subdomains": {"class": SubdomainScanner, "name": "Subdomains", "icon": "🔍"},
-    "vulns": {"class": VulnScanner, "name": "Vulnerabilities", "icon": "⚠️"},
 }
+
+# Hot-loadable modules registry (populated from dynamic_modules.json)
+DYNAMIC_MODULES = {}
+
+PROJECT_DIR = Path(__file__).parent.parent
+DYNAMIC_MODULES_DIR = PROJECT_DIR / "dynamic_modules"
+
+
+def load_dynamic_modules():
+    """Load all dynamic modules from registry."""
+    global DYNAMIC_MODULES
+    DYNAMIC_MODULES = {}
+    
+    registry_file = PROJECT_DIR / "data" / "dynamic_modules.json"
+    if not registry_file.exists():
+        return
+    
+    try:
+        registry = json.loads(registry_file.read_text())
+        for module_id, info in registry.items():
+            module_file = Path(info["file"])
+            if not module_file.exists():
+                continue
+            
+            try:
+                spec = importlib.util.spec_from_file_location(module_id, module_file)
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                
+                # Find the scanner class
+                scanner_class = None
+                for name in dir(module):
+                    obj = getattr(module, name)
+                    if isinstance(obj, type) and name.endswith("Scanner") and name != "BaseScanner":
+                        scanner_class = obj
+                        break
+                
+                if scanner_class:
+                    DYNAMIC_MODULES[module_id] = {
+                        "class": scanner_class,
+                        "name": info["name"],
+                        "icon": info["icon"]
+                    }
+                    print(f"Loaded dynamic module: {module_id}")
+            except Exception as e:
+                print(f"Error loading module {module_id}: {e}")
+    except Exception as e:
+        print(f"Error reading module registry: {e}")
+
+
+def get_all_modules():
+    """Get all available modules (static + dynamic)."""
+    # Reload dynamic modules on each call to pick up newly loaded ones
+    load_dynamic_modules()
+    return {**AVAILABLE_MODULES, **DYNAMIC_MODULES}
+
+
+def hot_load_module(module_id: str, module_class, name: str, icon: str):
+    """Hot-load a new scanner module."""
+    DYNAMIC_MODULES[module_id] = {
+        "class": module_class,
+        "name": name,
+        "icon": icon
+    }
+    # Update scanner agent stats
+    agent_manager.agents["scanner"].stats["available_modules"] = len(get_all_modules())
+    agent_manager._save_state()
 
 
 def calculate_risk_score(findings):
@@ -81,7 +142,7 @@ def run_scan_async(scan_id, target, modules, timeout):
             scans[scan_id]["progress"] = int((completed / total_modules) * 100)
         
         try:
-            scanner_class = AVAILABLE_MODULES[module_name]["class"]
+            scanner_class = get_all_modules()[module_name]["class"]
             scanner = scanner_class(target, timeout=timeout)
             module_results = scanner.scan()
             
@@ -128,7 +189,7 @@ def index():
     # Only pass serializable data to template
     modules_data = {
         name: {"name": info["name"], "icon": info["icon"]}
-        for name, info in AVAILABLE_MODULES.items()
+        for name, info in get_all_modules().items()
     }
     agents_data = agent_manager.get_all_agents()
     return render_template("index.html", modules=modules_data, agents=agents_data)
@@ -139,7 +200,7 @@ def start_scan():
     """Start a new scan."""
     data = request.json
     target = data.get("target", "").strip().lower()
-    modules = data.get("modules", list(AVAILABLE_MODULES.keys()))
+    modules = data.get("modules", list(get_all_modules().keys()))
     timeout = data.get("timeout", 30)
     
     # Validate target
@@ -213,7 +274,7 @@ def get_modules():
     """Get available modules."""
     return jsonify({
         name: {"name": info["name"], "icon": info["icon"]}
-        for name, info in AVAILABLE_MODULES.items()
+        for name, info in get_all_modules().items()
     })
 
 

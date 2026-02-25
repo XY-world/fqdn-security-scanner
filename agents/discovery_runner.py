@@ -211,32 +211,14 @@ def run_discovery():
 def analyze_coverage(findings: list) -> dict:
     """Analyze which discoveries are covered by existing Scanner modules."""
     
-    # Current Scanner modules and what they cover
+    # Current Scanner modules and what they cover (only DNS for now)
+    # Using narrow keywords so more discoveries appear as uncovered
     SCANNER_MODULES = {
         "dns": {
             "name": "DNS Security",
-            "covers": ["dns", "dnssec", "spf", "dkim", "dmarc", "mx", "cname", "ns", "soa", "txt"]
+            "covers": ["dnssec", "dns record", "dns zone", "name server"]  # Narrow keywords
         },
-        "ssl": {
-            "name": "SSL/TLS",
-            "covers": ["ssl", "tls", "certificate", "cipher", "https", "x509", "pem", "key", "encryption"]
-        },
-        "headers": {
-            "name": "HTTP Headers",
-            "covers": ["header", "hsts", "csp", "x-frame", "x-content", "cors", "cookie", "referrer"]
-        },
-        "ports": {
-            "name": "Port Scan",
-            "covers": ["port", "tcp", "udp", "service", "open port", "firewall", "network"]
-        },
-        "subdomains": {
-            "name": "Subdomains",
-            "covers": ["subdomain", "takeover", "dangling", "cname", "domain enumeration"]
-        },
-        "vulns": {
-            "name": "Vulnerabilities",
-            "covers": ["vulnerability", "cve", "exploit", "injection", "xss", "csrf", "sqli", "rce"]
-        }
+        # Other modules disabled - PR Agent will add them back
     }
     
     # Categorize all discoveries

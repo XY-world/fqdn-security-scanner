@@ -1,295 +1,256 @@
 {
-  "timestamp": "2026-02-25T07:13:58.110734+00:00",
-  "total_discoveries": 28,
-  "covered_count": 28,
-  "uncovered_count": 0,
-  "coverage_percentage": 100.0,
+  "timestamp": "2026-02-25T07:29:10.379383+00:00",
+  "total_discoveries": 23,
+  "covered_count": 3,
+  "uncovered_count": 20,
+  "coverage_percentage": 13.0,
   "categories": {
     "Email Security": {
       "count": 3,
-      "covered": 3,
-      "uncovered": 0,
+      "covered": 0,
+      "uncovered": 3,
       "discoveries": [
-        28,
-        24,
-        23
+        23,
+        19,
+        18
       ]
     },
     "Other": {
       "count": 4,
-      "covered": 4,
-      "uncovered": 0,
+      "covered": 0,
+      "uncovered": 4,
       "discoveries": [
-        27,
-        16,
-        15,
-        14
+        22,
+        11,
+        10,
+        9
       ]
     },
     "SSL/TLS": {
-      "count": 9,
-      "covered": 9,
-      "uncovered": 0,
+      "count": 4,
+      "covered": 0,
+      "uncovered": 4,
       "discoveries": [
-        26,
-        13,
-        12,
-        11,
-        5,
-        4,
-        3,
-        2,
-        1
+        21,
+        8,
+        7,
+        6
       ]
     },
     "HTTP Headers": {
       "count": 1,
-      "covered": 1,
-      "uncovered": 0,
+      "covered": 0,
+      "uncovered": 1,
       "discoveries": [
-        25
+        20
       ]
     },
     "DNS Security": {
       "count": 7,
-      "covered": 7,
-      "uncovered": 0,
+      "covered": 3,
+      "uncovered": 4,
       "discoveries": [
-        22,
-        21,
-        20,
-        10,
-        9,
-        8,
-        6
+        17,
+        16,
+        15,
+        5,
+        4,
+        3,
+        1
       ]
     },
     "Subdomain Security": {
       "count": 3,
-      "covered": 3,
-      "uncovered": 0,
+      "covered": 0,
+      "uncovered": 3,
       "discoveries": [
-        19,
-        18,
-        17
+        14,
+        13,
+        12
       ]
     },
     "Network": {
       "count": 1,
-      "covered": 1,
-      "uncovered": 0,
+      "covered": 0,
+      "uncovered": 1,
       "discoveries": [
-        7
+        2
       ]
     }
   },
   "covered": [
     {
-      "id": 28,
-      "title": "CVE-2022-36056: Cosign is a project under the sigstore organization which aims t",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 27,
-      "title": "CVE-2022-23649: Cosign provides container signing, verification, and storage in ",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 26,
-      "title": "CVE-2017-11364: The CMS installer in Joomla! before 3.7.4 does not verify a user",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 25,
-      "title": "CVE-2025-61084: MDaemon Mail Server 23.5.2 validates SPF, DKIM, and DMARC using ",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 24,
-      "title": "CVE-2025-59419: Netty is an asynchronous, event-driven network application frame",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 23,
-      "title": "CVE-2024-7208: A vulnerability in multi-tenant hosting allows an authenticated s",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 22,
+      "id": 17,
       "title": "CVE-2017-15107: A vulnerability was found in the implementation of DNSSEC in Dns",
       "covered_by": "dns",
       "module_name": "DNS Security"
     },
     {
-      "id": 21,
+      "id": 16,
       "title": "CVE-2010-0290: Unspecified vulnerability in ISC BIND 9.0.x through 9.3.x, 9.4 be",
       "covered_by": "dns",
       "module_name": "DNS Security"
     },
     {
-      "id": 20,
-      "title": "CVE-2009-4022: Unspecified vulnerability in ISC BIND 9.0.x through 9.3.x, 9.4 be",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 19,
-      "title": "CVE-2024-5528: An issue was discovered in GitLab CE/EE affecting all versions pr",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 18,
-      "title": "CVE-2023-36474: Interactsh is an open-source tool for detecting out-of-band inte",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 17,
-      "title": "CVE-2017-14389: An issue was discovered in Cloud Foundry Foundation capi-release",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 16,
-      "title": "CVE-2001-1567: Lotus Domino server 5.0.9a and earlier allows remote attackers to",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
       "id": 15,
-      "title": "CVE-2000-0563: The URLConnection function in MacOS Runtime Java (MRJ) 2.1 and ea",
-      "covered_by": "vulns",
-      "module_name": "Vulnerabilities"
-    },
-    {
-      "id": 14,
-      "title": "CVE-1999-0633: Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: N",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 13,
-      "title": "CVE-2007-2593: The Terminal Server in Microsoft Windows 2003 Server, when using ",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 12,
-      "title": "CVE-2006-2924: Ingate Firewall in the SIP module before 4.4.1 and SIParator befo",
-      "covered_by": "ssl",
-      "module_name": "SSL/TLS"
-    },
-    {
-      "id": 11,
-      "title": "CVE-2003-0131: The SSL and TLS components for OpenSSL 0.9.6i and earlier, 0.9.7,",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 10,
-      "title": "CVE-2003-0011: Unknown vulnerability in the DNS intrusion detection application ",
-      "covered_by": "dns",
-      "module_name": "DNS Security"
-    },
-    {
-      "id": 9,
-      "title": "CVE-2002-0990: The web proxy component in Symantec Enterprise Firewall (SEF) 6.5",
+      "title": "CVE-2009-4022: Unspecified vulnerability in ISC BIND 9.0.x through 9.3.x, 9.4 be",
       "covered_by": "dns",
       "module_name": "DNS Security"
     }
   ],
-  "uncovered": [],
+  "uncovered": [
+    {
+      "id": 23,
+      "title": "CVE-2022-36056: Cosign is a project under the sigstore organization which aims t",
+      "suggested_module": "email_security",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 22,
+      "title": "CVE-2022-23649: Cosign provides container signing, verification, and storage in ",
+      "suggested_module": "container_security",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 21,
+      "title": "CVE-2017-11364: The CMS installer in Joomla! before 3.7.4 does not verify a user",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 20,
+      "title": "CVE-2025-61084: MDaemon Mail Server 23.5.2 validates SPF, DKIM, and DMARC using ",
+      "suggested_module": "email_security",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 19,
+      "title": "CVE-2025-59419: Netty is an asynchronous, event-driven network application frame",
+      "suggested_module": "email_security",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 18,
+      "title": "CVE-2024-7208: A vulnerability in multi-tenant hosting allows an authenticated s",
+      "suggested_module": "email_security",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 14,
+      "title": "CVE-2024-5528: An issue was discovered in GitLab CE/EE affecting all versions pr",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 13,
+      "title": "CVE-2023-36474: Interactsh is an open-source tool for detecting out-of-band inte",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 12,
+      "title": "CVE-2017-14389: An issue was discovered in Cloud Foundry Foundation capi-release",
+      "suggested_module": "api_security",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 11,
+      "title": "CVE-2001-1567: Lotus Domino server 5.0.9a and earlier allows remote attackers to",
+      "suggested_module": "api_security",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 10,
+      "title": "CVE-2000-0563: The URLConnection function in MacOS Runtime Java (MRJ) 2.1 and ea",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 9,
+      "title": "CVE-1999-0633: Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: N",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 8,
+      "title": "CVE-2007-2593: The Terminal Server in Microsoft Windows 2003 Server, when using ",
+      "suggested_module": "waf_detector",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 7,
+      "title": "CVE-2006-2924: Ingate Firewall in the SIP module before 4.4.1 and SIParator befo",
+      "suggested_module": "waf_detector",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 6,
+      "title": "CVE-2003-0131: The SSL and TLS components for OpenSSL 0.9.6i and earlier, 0.9.7,",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 5,
+      "title": "CVE-2003-0011: Unknown vulnerability in the DNS intrusion detection application ",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 4,
+      "title": "CVE-2002-0990: The web proxy component in Symantec Enterprise Firewall (SEF) 6.5",
+      "suggested_module": "waf_detector",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 3,
+      "title": "CVE-1999-0622: Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: N",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 2,
+      "title": "Fickling: OBJ opcode call invisibility bypasses all safety checks",
+      "suggested_module": "waf_detector",
+      "category": "technique",
+      "status": "new"
+    },
+    {
+      "id": 1,
+      "title": "CVE-2022-23632: Traefik is an HTTP reverse proxy and load balancer. Prior to ver",
+      "suggested_module": "custom_check",
+      "category": "cve",
+      "status": "new"
+    }
+  ],
   "modules": [
-    "dns",
-    "ssl",
-    "headers",
-    "ports",
-    "subdomains",
-    "vulns"
+    "dns"
   ],
   "module_details": {
     "dns": {
       "name": "DNS Security",
       "covers": [
-        "dns",
         "dnssec",
-        "spf",
-        "dkim",
-        "dmarc",
-        "mx",
-        "cname",
-        "ns",
-        "soa",
-        "txt"
-      ]
-    },
-    "ssl": {
-      "name": "SSL/TLS",
-      "covers": [
-        "ssl",
-        "tls",
-        "certificate",
-        "cipher",
-        "https",
-        "x509",
-        "pem",
-        "key",
-        "encryption"
-      ]
-    },
-    "headers": {
-      "name": "HTTP Headers",
-      "covers": [
-        "header",
-        "hsts",
-        "csp",
-        "x-frame",
-        "x-content",
-        "cors",
-        "cookie",
-        "referrer"
-      ]
-    },
-    "ports": {
-      "name": "Port Scan",
-      "covers": [
-        "port",
-        "tcp",
-        "udp",
-        "service",
-        "open port",
-        "firewall",
-        "network"
-      ]
-    },
-    "subdomains": {
-      "name": "Subdomains",
-      "covers": [
-        "subdomain",
-        "takeover",
-        "dangling",
-        "cname",
-        "domain enumeration"
-      ]
-    },
-    "vulns": {
-      "name": "Vulnerabilities",
-      "covers": [
-        "vulnerability",
-        "cve",
-        "exploit",
-        "injection",
-        "xss",
-        "csrf",
-        "sqli",
-        "rce"
+        "dns record",
+        "dns zone",
+        "name server"
       ]
     }
   }

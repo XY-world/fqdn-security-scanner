@@ -1,277 +1,157 @@
 [
   {
-    "timestamp": "2026-02-25T06:51:29.743974+00:00",
+    "timestamp": "2026-02-25T07:28:38.143913+00:00",
     "agent": "discovery",
     "message": "Starting security discovery search..."
   },
   {
-    "timestamp": "2026-02-25T06:51:29.746087+00:00",
-    "agent": "discovery",
-    "message": "New discovery: Demo: New TLS 1.3 Extension Vulnerability"
-  },
-  {
-    "timestamp": "2026-02-25T06:51:29.747770+00:00",
-    "agent": "discovery",
-    "message": "Completed search. Found 1 new discoveries."
-  },
-  {
-    "timestamp": "2026-02-25T06:51:31.927913+00:00",
-    "agent": "scanner",
-    "message": "Starting scan of github.com"
-  },
-  {
-    "timestamp": "2026-02-25T06:51:47.219315+00:00",
-    "agent": "scanner",
-    "message": "Completed scan of github.com - 23 findings"
-  },
-  {
-    "timestamp": "2026-02-25T06:53:40.653164+00:00",
-    "agent": "scanner",
-    "message": "Starting scan of teams.microsoft.com"
-  },
-  {
-    "timestamp": "2026-02-25T06:53:46.955184+00:00",
-    "agent": "scanner",
-    "message": "Completed scan of teams.microsoft.com - 15 findings"
-  },
-  {
-    "timestamp": "2026-02-25T06:53:57.426936+00:00",
-    "agent": "discovery",
-    "message": "Starting security discovery search..."
-  },
-  {
-    "timestamp": "2026-02-25T06:53:57.428214+00:00",
-    "agent": "discovery",
-    "message": "New discovery: Demo: New TLS 1.3 Extension Vulnerability"
-  },
-  {
-    "timestamp": "2026-02-25T06:53:57.429111+00:00",
-    "agent": "discovery",
-    "message": "Completed search. Found 1 new discoveries."
-  },
-  {
-    "timestamp": "2026-02-25T06:55:24.826415+00:00",
-    "agent": "discovery",
-    "message": "Starting security discovery search..."
-  },
-  {
-    "timestamp": "2026-02-25T06:55:24.828398+00:00",
-    "agent": "discovery",
-    "message": "New discovery: Demo: New TLS 1.3 Extension Vulnerability"
-  },
-  {
-    "timestamp": "2026-02-25T06:55:24.830234+00:00",
-    "agent": "discovery",
-    "message": "Completed search. Found 1 new discoveries."
-  },
-  {
-    "timestamp": "2026-02-25T06:55:26.827992+00:00",
-    "agent": "discovery",
-    "message": "Starting security discovery search..."
-  },
-  {
-    "timestamp": "2026-02-25T06:55:26.830231+00:00",
-    "agent": "discovery",
-    "message": "New discovery: Demo: New TLS 1.3 Extension Vulnerability"
-  },
-  {
-    "timestamp": "2026-02-25T06:55:26.831164+00:00",
-    "agent": "discovery",
-    "message": "Completed search. Found 1 new discoveries."
-  },
-  {
-    "timestamp": "2026-02-25T06:55:43.006054+00:00",
-    "agent": "pr_agent",
-    "message": "Starting: Processing discovery #4"
-  },
-  {
-    "timestamp": "2026-02-25T06:55:43.006786+00:00",
-    "agent": "pr_agent",
-    "message": "Queued new module: TLS Extension Check"
-  },
-  {
-    "timestamp": "2026-02-25T06:55:43.007672+00:00",
-    "agent": "pr_agent",
-    "message": "Completed: Module code generated"
-  },
-  {
-    "timestamp": "2026-02-25T06:55:52.558793+00:00",
-    "agent": "scanner",
-    "message": "Starting scan of teams.microsoft.com"
-  },
-  {
-    "timestamp": "2026-02-25T06:55:59.305211+00:00",
-    "agent": "scanner",
-    "message": "Completed scan of teams.microsoft.com - 15 findings"
-  },
-  {
-    "timestamp": "2026-02-25T07:00:03.983713+00:00",
-    "agent": "discovery",
-    "message": "Starting security discovery search..."
-  },
-  {
-    "timestamp": "2026-02-25T07:00:03.985206+00:00",
-    "agent": "discovery",
-    "message": "New discovery: Demo: New TLS 1.3 Extension Vulnerability"
-  },
-  {
-    "timestamp": "2026-02-25T07:00:03.990859+00:00",
-    "agent": "discovery",
-    "message": "Completed search. Found 1 new discoveries."
-  },
-  {
-    "timestamp": "2026-02-25T07:02:47.548438+00:00",
-    "agent": "discovery",
-    "message": "Starting security discovery search..."
-  },
-  {
-    "timestamp": "2026-02-25T07:02:47.549089+00:00",
+    "timestamp": "2026-02-25T07:28:38.144400+00:00",
     "agent": "discovery",
     "message": "Searching: FQDN security vulnerability 2026"
   },
   {
-    "timestamp": "2026-02-25T07:02:49.541470+00:00",
+    "timestamp": "2026-02-25T07:28:40.233234+00:00",
     "agent": "discovery",
     "message": "Searching: DNS security CVE latest"
   },
   {
-    "timestamp": "2026-02-25T07:02:51.159698+00:00",
+    "timestamp": "2026-02-25T07:28:41.962018+00:00",
     "agent": "discovery",
     "message": "Searching: SSL TLS vulnerability new"
   },
   {
-    "timestamp": "2026-02-25T07:02:52.529459+00:00",
+    "timestamp": "2026-02-25T07:28:43.805674+00:00",
     "agent": "discovery",
     "message": "Searching: HTTP security headers bypass"
   },
   {
-    "timestamp": "2026-02-25T07:02:53.989138+00:00",
+    "timestamp": "2026-02-25T07:28:45.678685+00:00",
     "agent": "discovery",
     "message": "Searching: subdomain takeover technique"
   },
   {
-    "timestamp": "2026-02-25T07:02:55.300282+00:00",
+    "timestamp": "2026-02-25T07:28:47.518950+00:00",
     "agent": "discovery",
     "message": "Searching: DNSSEC vulnerability"
   },
   {
-    "timestamp": "2026-02-25T07:02:56.659533+00:00",
+    "timestamp": "2026-02-25T07:28:49.335861+00:00",
     "agent": "discovery",
     "message": "Searching: SPF DKIM DMARC bypass"
   },
   {
-    "timestamp": "2026-02-25T07:02:58.625039+00:00",
+    "timestamp": "2026-02-25T07:28:50.988158+00:00",
     "agent": "discovery",
     "message": "Searching: certificate transparency security"
   },
   {
-    "timestamp": "2026-02-25T07:02:59.987437+00:00",
-    "agent": "discovery",
-    "message": "Completed search. Found 0 new discoveries."
-  },
-  {
-    "timestamp": "2026-02-25T07:03:26.896319+00:00",
-    "agent": "discovery",
-    "message": "Starting security discovery search..."
-  },
-  {
-    "timestamp": "2026-02-25T07:03:26.896984+00:00",
-    "agent": "discovery",
-    "message": "Searching: FQDN security vulnerability 2026"
-  },
-  {
-    "timestamp": "2026-02-25T07:03:28.993336+00:00",
-    "agent": "discovery",
-    "message": "Searching: DNS security CVE latest"
-  },
-  {
-    "timestamp": "2026-02-25T07:03:30.732931+00:00",
-    "agent": "discovery",
-    "message": "Searching: SSL TLS vulnerability new"
-  },
-  {
-    "timestamp": "2026-02-25T07:03:32.454817+00:00",
-    "agent": "discovery",
-    "message": "Searching: HTTP security headers bypass"
-  },
-  {
-    "timestamp": "2026-02-25T07:03:34.203445+00:00",
-    "agent": "discovery",
-    "message": "Searching: subdomain takeover technique"
-  },
-  {
-    "timestamp": "2026-02-25T07:03:35.897785+00:00",
-    "agent": "discovery",
-    "message": "Searching: DNSSEC vulnerability"
-  },
-  {
-    "timestamp": "2026-02-25T07:03:37.878483+00:00",
-    "agent": "discovery",
-    "message": "Searching: SPF DKIM DMARC bypass"
-  },
-  {
-    "timestamp": "2026-02-25T07:03:39.550901+00:00",
-    "agent": "discovery",
-    "message": "Searching: certificate transparency security"
-  },
-  {
-    "timestamp": "2026-02-25T07:03:41.244863+00:00",
-    "agent": "discovery",
-    "message": "Completed search. Found 23 new discoveries."
-  },
-  {
-    "timestamp": "2026-02-25T07:13:43.800650+00:00",
-    "agent": "discovery",
-    "message": "Starting security discovery search..."
-  },
-  {
-    "timestamp": "2026-02-25T07:13:43.801412+00:00",
-    "agent": "discovery",
-    "message": "Searching: FQDN security vulnerability 2026"
-  },
-  {
-    "timestamp": "2026-02-25T07:13:45.797530+00:00",
-    "agent": "discovery",
-    "message": "Searching: DNS security CVE latest"
-  },
-  {
-    "timestamp": "2026-02-25T07:13:47.591332+00:00",
-    "agent": "discovery",
-    "message": "Searching: SSL TLS vulnerability new"
-  },
-  {
-    "timestamp": "2026-02-25T07:13:49.409239+00:00",
-    "agent": "discovery",
-    "message": "Searching: HTTP security headers bypass"
-  },
-  {
-    "timestamp": "2026-02-25T07:13:51.086509+00:00",
-    "agent": "discovery",
-    "message": "Searching: subdomain takeover technique"
-  },
-  {
-    "timestamp": "2026-02-25T07:13:52.818579+00:00",
-    "agent": "discovery",
-    "message": "Searching: DNSSEC vulnerability"
-  },
-  {
-    "timestamp": "2026-02-25T07:13:54.593421+00:00",
-    "agent": "discovery",
-    "message": "Searching: SPF DKIM DMARC bypass"
-  },
-  {
-    "timestamp": "2026-02-25T07:13:56.317961+00:00",
-    "agent": "discovery",
-    "message": "Searching: certificate transparency security"
-  },
-  {
-    "timestamp": "2026-02-25T07:13:58.109577+00:00",
+    "timestamp": "2026-02-25T07:28:52.802624+00:00",
     "agent": "discovery",
     "message": "Analyzing coverage against Scanner modules..."
   },
   {
-    "timestamp": "2026-02-25T07:13:58.113961+00:00",
+    "timestamp": "2026-02-25T07:28:52.805319+00:00",
     "agent": "discovery",
-    "message": "Completed. Found 0 discoveries, 0 need new modules."
+    "message": "Completed. Found 23 discoveries, 2 need new modules."
+  },
+  {
+    "timestamp": "2026-02-25T07:29:22.693933+00:00",
+    "agent": "pr_agent",
+    "message": "Processing discovery #4"
+  },
+  {
+    "timestamp": "2026-02-25T07:29:22.694777+00:00",
+    "agent": "pr_agent",
+    "message": "Generating module for: CVE-2002-0990: The web proxy component in Symantec..."
+  },
+  {
+    "timestamp": "2026-02-25T07:29:22.695725+00:00",
+    "agent": "pr_agent",
+    "message": "Hot-loading module: Security Check"
+  },
+  {
+    "timestamp": "2026-02-25T07:29:22.873302+00:00",
+    "agent": "pr_agent",
+    "message": "\u274c Failed to load module"
+  },
+  {
+    "timestamp": "2026-02-25T07:29:35.654980+00:00",
+    "agent": "pr_agent",
+    "message": "Processing discovery #4"
+  },
+  {
+    "timestamp": "2026-02-25T07:29:35.655838+00:00",
+    "agent": "pr_agent",
+    "message": "Generating module for: CVE-2002-0990: The web proxy component in Symantec..."
+  },
+  {
+    "timestamp": "2026-02-25T07:29:35.656690+00:00",
+    "agent": "pr_agent",
+    "message": "Hot-loading module: Security Check"
+  },
+  {
+    "timestamp": "2026-02-25T07:29:35.658089+00:00",
+    "agent": "pr_agent",
+    "message": "\u274c Failed to load module"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:31.027462+00:00",
+    "agent": "pr_agent",
+    "message": "Processing discovery #4"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:31.028334+00:00",
+    "agent": "pr_agent",
+    "message": "Generating module for: CVE-2002-0990: The web proxy component in Symantec..."
+  },
+  {
+    "timestamp": "2026-02-25T07:30:31.029197+00:00",
+    "agent": "pr_agent",
+    "message": "Hot-loading module: Security Check"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:31.033884+00:00",
+    "agent": "pr_agent",
+    "message": "\u2705 Module loaded: Security Check (generic_4)"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:40.286084+00:00",
+    "agent": "pr_agent",
+    "message": "Processing discovery #5"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:40.286929+00:00",
+    "agent": "pr_agent",
+    "message": "Generating module for: CVE-2003-0011: Unknown vulnerability in the DNS in..."
+  },
+  {
+    "timestamp": "2026-02-25T07:30:40.287969+00:00",
+    "agent": "pr_agent",
+    "message": "Hot-loading module: Security Check"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:40.292428+00:00",
+    "agent": "pr_agent",
+    "message": "\u2705 Module loaded: Security Check (generic_5)"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:40.357924+00:00",
+    "agent": "pr_agent",
+    "message": "Processing discovery #6"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:40.358835+00:00",
+    "agent": "pr_agent",
+    "message": "Generating module for: CVE-2003-0131: The SSL and TLS components for Open..."
+  },
+  {
+    "timestamp": "2026-02-25T07:30:40.360087+00:00",
+    "agent": "pr_agent",
+    "message": "Hot-loading module: SSL/TLS Security"
+  },
+  {
+    "timestamp": "2026-02-25T07:30:40.373366+00:00",
+    "agent": "pr_agent",
+    "message": "\u2705 Module loaded: SSL/TLS Security (ssl_6)"
   }
 ]
