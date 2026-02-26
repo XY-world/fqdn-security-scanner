@@ -1,19 +1,29 @@
 {
-  "timestamp": "2026-02-25T08:07:29.020029+00:00",
-  "total_discoveries": 24,
+  "timestamp": "2026-02-26T03:24:44.254698+00:00",
+  "total_discoveries": 26,
   "covered_count": 3,
-  "uncovered_count": 21,
-  "coverage_percentage": 12.5,
+  "uncovered_count": 23,
+  "coverage_percentage": 11.5,
   "categories": {
     "Subdomain Security": {
-      "count": 4,
+      "count": 5,
       "covered": 0,
-      "uncovered": 4,
+      "uncovered": 5,
       "discoveries": [
+        26,
         24,
         14,
         13,
         12
+      ]
+    },
+    "HTTP Headers": {
+      "count": 2,
+      "covered": 0,
+      "uncovered": 2,
+      "discoveries": [
+        25,
+        20
       ]
     },
     "Email Security": {
@@ -46,14 +56,6 @@
         8,
         7,
         6
-      ]
-    },
-    "HTTP Headers": {
-      "count": 1,
-      "covered": 0,
-      "uncovered": 1,
-      "discoveries": [
-        20
       ]
     },
     "DNS Security": {
@@ -100,6 +102,20 @@
     }
   ],
   "uncovered": [
+    {
+      "id": 26,
+      "title": "Rust has Critical Stored XSS in Preview Modal, leading to Administrative Account",
+      "suggested_module": "waf_detector",
+      "category": "cve",
+      "status": "new"
+    },
+    {
+      "id": 25,
+      "title": "Parse Server: Account takeover via JWT algorithm confusion in Google auth adapte",
+      "suggested_module": "auth_checker",
+      "category": "news",
+      "status": "new"
+    },
     {
       "id": 24,
       "title": "Statamic is vulnerable to account takeover via password reset link injection",
@@ -225,20 +241,6 @@
       "suggested_module": "waf_detector",
       "category": "cve",
       "status": "implemented"
-    },
-    {
-      "id": 3,
-      "title": "CVE-1999-0622: Rejected reason: DO NOT USE THIS CANDIDATE NUMBER.  ConsultIDs: N",
-      "suggested_module": "custom_check",
-      "category": "cve",
-      "status": "reviewing"
-    },
-    {
-      "id": 2,
-      "title": "Fickling: OBJ opcode call invisibility bypasses all safety checks",
-      "suggested_module": "waf_detector",
-      "category": "technique",
-      "status": "new"
     }
   ],
   "modules": [

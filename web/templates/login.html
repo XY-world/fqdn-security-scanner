@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DomainForge - Admin Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <div class="bg-gray-800 rounded-2xl border border-gray-700 p-8 shadow-xl">
+            <!-- Logo -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4">
+                    <span class="text-3xl">🛡️</span>
+                </div>
+                <h1 class="text-2xl font-bold text-white">DomainForge</h1>
+                <p class="text-gray-400 text-sm mt-1">Agent Management Login</p>
+            </div>
+            
+            {% if error %}
+            <div class="bg-red-900/50 border border-red-700 rounded-lg px-4 py-3 mb-6 text-red-300 text-sm">
+                {{ error }}
+            </div>
+            {% endif %}
+            
+            <!-- Login Form -->
+            <form method="POST" action="/agents/login" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                    <input type="text" name="username" required
+                           class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white 
+                                  focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                           placeholder="Enter username">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <input type="password" name="password" required
+                           class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white 
+                                  focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                           placeholder="Enter password">
+                </div>
+                
+                <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition">
+                    🔐 Login to Agent Panel
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <a href="/" class="text-gray-500 hover:text-gray-300 text-sm">← Back to Scanner</a>
+            </div>
+        </div>
+        
+        <p class="text-center text-gray-600 text-xs mt-6">
+            Level 8: AI-Orchestrated Engineering
+        </p>
+    </div>
+</body>
+</html>

@@ -214,5 +214,23 @@
     "source": "https://github.com/advisories/GHSA-jxq9-79vj-rgvw",
     "category": "cve",
     "status": "new"
+  },
+  {
+    "id": 25,
+    "timestamp": "2026-02-26T03:24:32.263253+00:00",
+    "title": "Parse Server: Account takeover via JWT algorithm confusion in Google auth adapter",
+    "description": "### Impact\n\nAn unauthenticated attacker can forge a Google authentication token with `alg: \"none\"` to log in as any user linked to a Google account, without knowing their credentials. All deployments with Google authentication enabled are affected.\n\n### Patches\n\nThe fix hardcodes the expected `RS256` algorithm instead of trusting the JWT header, and replaces the Google adapter's custom key fetcher with `jwks-rsa` which rejects unknown key IDs.\n\n### Workarounds\n\nDisable Google authentication unti",
+    "source": "https://github.com/advisories/GHSA-4q3h-vp4r-prv2",
+    "category": "news",
+    "status": "new"
+  },
+  {
+    "id": 26,
+    "timestamp": "2026-02-26T03:24:32.265956+00:00",
+    "title": "Rust has Critical Stored XSS in Preview Modal, leading to Administrative Account Takeover",
+    "description": "### Summary\nA Stored Cross-Site Scripting (XSS) vulnerability in the RustFS Console allows an attacker to execute arbitrary JavaScript in the context of the management console. By bypassing the PDF preview logic, an attacker can steal administrator credentials from `localStorage`, leading to full account takeover and system compromise.\n\n### Details\nThe vulnerability exists due to improper validation of the response content type during the file preview process and a lack of origin separation betw",
+    "source": "https://github.com/advisories/GHSA-v9fg-3cr2-277j",
+    "category": "cve",
+    "status": "new"
   }
 ]

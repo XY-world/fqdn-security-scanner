@@ -12,12 +12,14 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, jsonify, Response, session
 from flask_cors import CORS
 import json
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 import threading
+import secrets
+import functools
 
 from modules.dns_scanner import DNSScanner
 from report.generator import ReportGenerator
@@ -26,7 +28,27 @@ from agents.discovery import discovery_agent
 from agents.pr_agent import pr_agent
 
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(32)  # For session management
 CORS(app)
+
+# Admin credentials (in production, use environment variables)
+ADMIN_USERNAME = os.environ.get("SCANNER_ADMIN_USER", "admin")
+ADMIN_PASSWORD = os.environ.get("SCANNER_ADMIN_PASS", "domainforge2026")
+
+
+def require_admin(f):
+    """Decorator to require admin authentication for agent endpoints."""
+    @functools.wraps(f)
+    def decorated_function(*args, **kwargs):
+        # Check session
+        if session.get("admin_authenticated"):
+            return f(*args, **kwargs)
+        # Check header token
+        auth_token = request.headers.get("X-Admin-Token")
+        if auth_token == ADMIN_PASSWORD:
+            return f(*args, **kwargs)
+        return jsonify({"error": "Authentication required", "login_url": "/agents/login"}), 401
+    return decorated_function
 
 # Store scan results and status
 scans = {}
@@ -195,6 +217,44 @@ def index():
     return render_template("index.html", modules=modules_data, agents=agents_data)
 
 
+# ============ Admin Authentication ============
+
+@app.route("/agents/login", methods=["GET", "POST"])
+def agents_login():
+    """Admin login page for agent management."""
+    if request.method == "POST":
+        data = request.json or request.form
+        username = data.get("username", "")
+        password = data.get("password", "")
+        
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session["admin_authenticated"] = True
+            if request.is_json:
+                return jsonify({"success": True, "message": "Login successful"})
+            return render_template("index.html", modules={}, agents={}, login_success=True)
+        else:
+            if request.is_json:
+                return jsonify({"error": "Invalid credentials"}), 401
+            return render_template("login.html", error="Invalid credentials")
+    
+    return render_template("login.html")
+
+
+@app.route("/agents/logout")
+def agents_logout():
+    """Logout from admin."""
+    session.pop("admin_authenticated", None)
+    return jsonify({"success": True, "message": "Logged out"})
+
+
+@app.route("/agents/check")
+def agents_check():
+    """Check if user is authenticated."""
+    if session.get("admin_authenticated"):
+        return jsonify({"authenticated": True})
+    return jsonify({"authenticated": False}), 401
+
+
 @app.route("/api/scan", methods=["POST"])
 def start_scan():
     """Start a new scan."""
@@ -278,15 +338,17 @@ def get_modules():
     })
 
 
-# ============ Agent API Endpoints ============
+# ============ Agent API Endpoints (Protected) ============
 
 @app.route("/api/agents")
+@require_admin
 def get_agents():
     """Get all agent statuses."""
     return jsonify(agent_manager.get_all_agents())
 
 
 @app.route("/api/agents/<agent_name>")
+@require_admin
 def get_agent(agent_name):
     """Get a specific agent's status."""
     agent = agent_manager.get_agent(agent_name)
@@ -297,6 +359,7 @@ def get_agent(agent_name):
 
 
 @app.route("/api/agents/activities")
+@require_admin
 def get_activities():
     """Get recent agent activities."""
     limit = request.args.get("limit", 20, type=int)
@@ -304,6 +367,7 @@ def get_activities():
 
 
 @app.route("/api/agents/discoveries")
+@require_admin
 def get_discoveries():
     """Get security discoveries."""
     limit = request.args.get("limit", 10, type=int)
@@ -312,6 +376,7 @@ def get_discoveries():
 
 
 @app.route("/api/agents/coverage")
+@require_admin
 def get_coverage():
     """Get coverage analysis with latest discovery statuses."""
     coverage = agent_manager.get_coverage_analysis()
@@ -330,6 +395,7 @@ def get_coverage():
 
 
 @app.route("/api/agents/discoveries/<int:discovery_id>", methods=["PATCH"])
+@require_admin
 def update_discovery(discovery_id):
     """Update a discovery's status."""
     data = request.json
@@ -343,6 +409,7 @@ def update_discovery(discovery_id):
 
 
 @app.route("/api/agents/discovery/trigger", methods=["POST"])
+@require_admin
 def trigger_discovery():
     """Trigger a real discovery search using web search."""
     import subprocess
@@ -366,6 +433,7 @@ def trigger_discovery():
 
 
 @app.route("/api/agents/pr/trigger", methods=["POST"])
+@require_admin
 def trigger_pr_agent():
     """Trigger the PR agent to process a discovery."""
     import subprocess

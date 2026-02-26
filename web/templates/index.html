@@ -30,7 +30,7 @@
                     <span class="text-xs bg-purple-600 px-2 py-1 rounded-full">Multi-Agent</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button @click="activeTab = activeTab === 'agents' ? 'scanner' : 'agents'"
+                    <button @click="checkAuthAndSwitchTab(activeTab === 'agents' ? 'scanner' : 'agents')"
                             class="text-sm px-3 py-1.5 rounded-lg transition"
                             :class="activeTab === 'agents' ? 'bg-purple-600' : 'bg-gray-700 hover:bg-gray-600'">
                         🤖 [[ activeTab === 'agents' ? 'Scanner' : 'Agents' ]]
@@ -46,6 +46,48 @@
         </header>
 
         <main class="max-w-7xl mx-auto px-4 py-8">
+            
+            <!-- Login Modal for Agent Panel -->
+            <div v-if="showLoginModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+                <div class="bg-gray-800 rounded-2xl border border-gray-700 p-8 w-full max-w-md">
+                    <div class="text-center mb-6">
+                        <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-xl mb-3">
+                            <span class="text-2xl">🔐</span>
+                        </div>
+                        <h2 class="text-xl font-bold">Agent Panel Login</h2>
+                        <p class="text-gray-400 text-sm mt-1">Authentication required to access agent management</p>
+                    </div>
+                    
+                    <div v-if="loginError" class="bg-red-900/50 border border-red-700 rounded-lg px-4 py-3 mb-4 text-red-300 text-sm">
+                        [[ loginError ]]
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                            <input type="text" v-model="loginUsername"
+                                   class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white 
+                                          focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                                   placeholder="Enter username" @keyup.enter="doLogin">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                            <input type="password" v-model="loginPassword"
+                                   class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white 
+                                          focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                                   placeholder="Enter password" @keyup.enter="doLogin">
+                        </div>
+                        <button @click="doLogin"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition">
+                            🔐 Login
+                        </button>
+                        <button @click="showLoginModal = false; activeTab = 'scanner'"
+                                class="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition text-sm">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
             
             <!-- Agent Orchestra Panel - Three Column Layout -->
             <div v-if="activeTab === 'agents'" class="grid gap-4 h-[calc(100vh-120px)]"
@@ -157,13 +199,13 @@
                             <!-- Need New Modules -->
                             <div v-if="coverage?.uncovered?.length > 0" class="mb-6">
                                 <h4 class="text-sm font-medium text-gray-300 mb-3">⚠️ Need New Modules</h4>
-                                <div class="space-y-2">
+                                <div class="space-y-3">
                                     <div v-for="(items, moduleName) in groupedUncovered" :key="moduleName"
-                                         class="bg-red-900/20 border border-red-800/50 rounded-lg px-3 py-2">
-                                        <div class="flex items-center justify-between">
+                                         class="bg-red-900/20 border border-red-800/50 rounded-lg p-3">
+                                        <div class="flex items-center justify-between mb-2">
                                             <div class="flex items-center space-x-2">
                                                 <span class="text-blue-400 font-medium text-sm">[[ moduleName ]]</span>
-                                                <span class="text-xs bg-red-800/50 px-2 py-0.5 rounded">[[ items.length ]]</span>
+                                                <span class="text-xs bg-red-800/50 px-2 py-0.5 rounded">[[ items.length ]] issues</span>
                                             </div>
                                             <div class="flex space-x-2">
                                                 <button v-if="getGroupStatus(items) === 'new'"
@@ -178,6 +220,14 @@
                                                 </button>
                                                 <span v-if="getGroupStatus(items) === 'implemented'" class="text-xs text-green-400">✓</span>
                                             </div>
+                                        </div>
+                                        <!-- Test Description -->
+                                        <div class="text-xs text-gray-400 mb-2">
+                                            <span class="text-gray-500">Test:</span> [[ getModuleTestDescription(moduleName) ]]
+                                        </div>
+                                        <!-- Test Criteria -->
+                                        <div class="text-xs text-gray-500">
+                                            <span class="text-gray-600">Criteria:</span> [[ getModuleTestCriteria(moduleName) ]]
                                         </div>
                                     </div>
                                 </div>
@@ -472,6 +522,13 @@
                 const selectedModuleFilter = ref(null);
                 const selectedAgent = ref('discovery');  // Default selected agent
                 const activityCollapsed = ref(false);  // Activity panel collapsed state
+                
+                // Authentication state
+                const isAuthenticated = ref(false);
+                const showLoginModal = ref(false);
+                const loginUsername = ref('');
+                const loginPassword = ref('');
+                const loginError = ref('');
                 const discoveryRunning = ref(false);  // Discovery in progress
                 const discoveryProgress = ref(0);  // Discovery progress 0-100
                 const implementProgress = ref({});  // Module implementation progress
@@ -512,17 +569,59 @@
                     return "Security scanner module generated by PR Agent.";
                 };
                 
-                // Fetch agent data
+                // Test descriptions for Need New Modules
+                const getModuleTestDescription = (moduleName) => {
+                    const tests = {
+                        'ssl_check': 'Verify SSL/TLS certificate validity, protocol versions (TLS 1.2+), and cipher suite strength.',
+                        'headers_security': 'Check HTTP security headers: HSTS, CSP, X-Frame-Options, X-Content-Type-Options.',
+                        'email_security': 'Validate email authentication: SPF records, DKIM signatures, DMARC policies.',
+                        'subdomain_takeover': 'Scan for dangling DNS records and vulnerable subdomain configurations.',
+                        'port_scan': 'Identify open ports and running services for known vulnerabilities.',
+                        'dns_security': 'Verify DNSSEC configuration, CAA records, and DNS zone security.'
+                    };
+                    // Try exact match first, then prefix match
+                    if (tests[moduleName]) return tests[moduleName];
+                    for (const [key, val] of Object.entries(tests)) {
+                        if (moduleName.toLowerCase().includes(key.split('_')[0])) return val;
+                    }
+                    return 'Implement detection logic for this vulnerability type and run validation tests.';
+                };
+                
+                // Test criteria for Need New Modules
+                const getModuleTestCriteria = (moduleName) => {
+                    const criteria = {
+                        'ssl_check': 'Pass: TLS 1.2+, valid cert, strong ciphers | Fail: Expired cert, weak protocols, self-signed',
+                        'headers_security': 'Pass: All headers present | Fail: Missing HSTS, CSP, or X-Frame-Options',
+                        'email_security': 'Pass: Valid SPF, DKIM, DMARC | Fail: Missing or misconfigured records',
+                        'subdomain_takeover': 'Pass: All CNAMEs resolve correctly | Fail: Dangling records or unclaimed services',
+                        'port_scan': 'Pass: Only expected ports open | Fail: Unexpected services or vulnerable versions',
+                        'dns_security': 'Pass: DNSSEC enabled, CAA set | Fail: Missing DNSSEC or CAA records'
+                    };
+                    if (criteria[moduleName]) return criteria[moduleName];
+                    for (const [key, val] of Object.entries(criteria)) {
+                        if (moduleName.toLowerCase().includes(key.split('_')[0])) return val;
+                    }
+                    return 'Pass: No vulnerabilities detected | Fail: Vulnerability confirmed with evidence';
+                };
+                
+                // Fetch agent data (with auth check)
                 const fetchAgents = async () => {
                     try {
                         const res = await fetch('api/agents');
+                        if (res.status === 401) {
+                            isAuthenticated.value = false;
+                            showLoginModal.value = true;
+                            return;
+                        }
                         agents.value = await res.json();
+                        isAuthenticated.value = true;
                     } catch (e) { console.error('Fetch agents error:', e); }
                 };
                 
                 const fetchActivities = async () => {
                     try {
                         const res = await fetch('api/agents/activities');
+                        if (res.status === 401) return;
                         activities.value = await res.json();
                     } catch (e) { console.error('Fetch activities error:', e); }
                 };
@@ -530,8 +629,56 @@
                 const fetchDiscoveries = async () => {
                     try {
                         const res = await fetch('api/agents/discoveries');
+                        if (res.status === 401) return;
                         discoveries.value = await res.json();
                     } catch (e) { console.error('Fetch discoveries error:', e); }
+                };
+                
+                const doLogin = async () => {
+                    loginError.value = '';
+                    try {
+                        const res = await fetch('agents/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                username: loginUsername.value,
+                                password: loginPassword.value
+                            })
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                            isAuthenticated.value = true;
+                            showLoginModal.value = false;
+                            loginUsername.value = '';
+                            loginPassword.value = '';
+                            refreshAgentData();
+                        } else {
+                            loginError.value = data.error || 'Login failed';
+                        }
+                    } catch (e) {
+                        loginError.value = 'Connection error';
+                    }
+                };
+                
+                const checkAuthAndSwitchTab = async (tab) => {
+                    if (tab === 'agents' && !isAuthenticated.value) {
+                        // Check if already authenticated
+                        try {
+                            const res = await fetch('agents/check');
+                            if (res.ok) {
+                                isAuthenticated.value = true;
+                                activeTab.value = 'agents';
+                                refreshAgentData();
+                            } else {
+                                showLoginModal.value = true;
+                            }
+                        } catch (e) {
+                            showLoginModal.value = true;
+                        }
+                    } else {
+                        activeTab.value = tab;
+                        if (tab === 'agents') refreshAgentData();
+                    }
                 };
                 
                 const fetchCoverage = async () => {
@@ -818,7 +965,9 @@
                     agents, activities, discoveries, coverage,
                     selectedModuleFilter, filteredDiscoveries, selectedAgent, activityCollapsed,
                     discoveryRunning, discoveryProgress, implementProgress,
-                    implementedDiscoveries, getModuleDescription,
+                    isAuthenticated, showLoginModal, loginUsername, loginPassword, loginError,
+                    doLogin, checkAuthAndSwitchTab,
+                    implementedDiscoveries, getModuleDescription, getModuleTestDescription, getModuleTestCriteria,
                     moduleCount, groupedUncovered, getGroupStatus, reviewGroup,
                     toggleModule, startScan, toggleFinding,
                     severityIcon, severityBgClass, sortedFindings,

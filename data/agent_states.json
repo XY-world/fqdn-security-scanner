@@ -4,10 +4,10 @@
     "display_name": "Discovery Agent",
     "icon": "\ud83d\udd0d",
     "status": "idle",
-    "last_run": "2026-02-25T08:07:29.021133+00:00",
-    "last_result": "Found 0 new items, 21 not covered",
+    "last_run": "2026-02-26T03:24:44.255853+00:00",
+    "last_result": "Found 2 new items, 23 not covered",
     "stats": {
-      "discoveries": 1,
+      "discoveries": 3,
       "last_search": null
     }
   },
